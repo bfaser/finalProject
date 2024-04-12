@@ -17,7 +17,7 @@ int showGraphics () {
   Rectangle rectangle(400, 400, position, "assets/whitworth-university_logo.png");
 
   // Text saying "Whitworth Pirates" 
-  Text text(Window::renderer, "assets/times.ttf", 30, "Whitwoth Pirates", {0, 0, 0, 255});
+  Text text(Window::renderer, 30, "Whitworth Pirates", {0, 0, 0, 255});
 
   // Generic Background color to fill the screen with after every iteration of the loop
   SDL_Color backgroundColor = {255,255,255,255};
@@ -40,19 +40,26 @@ int showGraphics () {
 // This rework will make it MUCH easier to get the typed letters to appear on the screen
 // Add comments to this function as you refactor and rework -> it will help a TON in the long run
 int showWordle (std::string fiveLetter[]) {
+  // Initialize Window named "Wordle" with variables windowWidth and windowHeight
   int windowWidth = 640, windowHeight = 480;
   Window wordleWindow("Wordle", windowWidth, windowHeight);
-
-  int rows, columns, topBuffer, bottomBuffer, sideBuffer, cellBuffer; 
+  
+  // Separate SDL_Colors into their own cpp file? That way they are all unified
   SDL_Color grey = {140,140,140,255}; // Color grey in r,g,b,a values
   SDL_Color black = {0, 0, 0, 255};
-  rows = 5; 
-  columns = 5;
-  topBuffer = 40;
-  bottomBuffer = 1;
-  sideBuffer = 20;
-  cellBuffer = 1;
+  
+  // Components to the placement vector, specifying rows, columns and buffers
+  int rows, columns, topBuffer, bottomBuffer, sideBuffer, cellBuffer; 
+  rows = 5; // Number of  cells stacked vertically
+  columns = 5; // Number of cells per row
+  topBuffer = 40; // In pixels, specifies space from top of window
+  bottomBuffer = 1; // In pixels, specifies space from bottom of window
+  sideBuffer = 20; // In pixels, specifies space from the sides of the window, symmetric
+  cellBuffer = 1; // In pixels, specifies the separation between cells both horizontally and vertically
+
+  // Wrapping the above specifications into a single array to pass into the gradCreate function
   int placement[6] = {rows, columns, topBuffer, bottomBuffer, sideBuffer, cellBuffer};
+  // Generates a generic 
   Rectangle rectangleArray[rows*columns];
 
 
@@ -63,11 +70,11 @@ int showWordle (std::string fiveLetter[]) {
     letter = "";
     char l = fiveLetter[i / rows][i % rows];
     letter += l;
-    rectangleText[i].defineObj(Window::renderer, "assets/times.ttf", 30, letter, black, 1);
+    rectangleText[i].defineObj(Window::renderer, 30, letter, black, 1);
   }
 
 
-  gridOfRects(wordleWindow, placement, grey, rectangleArray, true, rectangleText);
+  gridCreate(wordleWindow, placement, grey, rectangleArray , true, rectangleText);
   SDL_Color backgroundColor = {100,100,100,255};
   while (!wordleWindow.isClosed()) {
       pollEvents(wordleWindow);
@@ -95,7 +102,6 @@ Window:: window
 
 int placement[3-6] = {rows, columns, buffer(s)}
 
-
 int color[4] = {r,g,b,a}
 
 rectArray[rows * columns] 
@@ -106,12 +112,15 @@ bool multiBuffer - buffers expands to top buffer, bottom buffer, side buffers, a
 
 // Add comments to this function so that it is easier to reuse (e.g. connections renderer)
 
-void gridOfRects(Window &window, int placement[], SDL_Color color, Rectangle rectangleArray[], bool multiBuffer, Text rectangleText[]) {
+void gridCreate(Window &window, int placement[], SDL_Color color, Rectangle rectangleArray[], bool multiBuffer, Text rectangleText[]) {
+  // Placeholder variables to make placement elements clearer
   int width, height, rows, columns,buffer;
   rows = placement[0];
   columns = placement[1];
   buffer = placement[2];
+  // Checks if the individual buffers flag is true
   if (multiBuffer) {
+    // Accounts for the modified width and heights of the cells being separated
     int topBuffer, bottomBuffer, sideBuffer, cellBuffers;
     topBuffer = buffer;
     bottomBuffer = placement[3];
@@ -122,20 +131,27 @@ void gridOfRects(Window &window, int placement[], SDL_Color color, Rectangle rec
     height = (window.getHeight() - (topBuffer + bottomBuffer + rows*cellBuffers)) / rows;
   }
   else {
+    // Default case where all cells are edge-to-edge
     width = (window.getWidth() - 2*buffer) / columns;
     height = (window.getHeight() - 2*buffer) / rows;
   }
   
+  // X and Y positions of each rectangle center ; individual rectangle positions are saved within rectangle object
   int positionX, positionY;
 
+  // Loop over the rows (top -> bottom)
   for (int r = 0; r < placement[0]; r++) {
+    // Calculate the Y component of rectangles in the row, taking into account the different buffer types
     positionY = buffer + (height / 2) + (r*height);
     if (multiBuffer) {positionY += r*placement[5];}
+    // Loop over each rectangle in rows (left -> right)
     for (int c = 0; c < columns; c++) {
+      // Calculate the X component of each rectangle, with respect to the buffer style
       positionX = buffer + (width / 2) + (c*width);
       if (multiBuffer) {positionX = placement[4] + (width / 2) + c*(width + placement[5]);}
       rectangleArray[r*columns + c].define(width, height, positionX, positionY, color);
-      rectangleText[r*columns + c].linkRect(rectangleArray[r*columns + c]);
+      // If there is a text object corresponding to each rectangle, link text to the corresponding rectangle 
+      if (rectangleText != nullptr) {rectangleText[r*columns + c].linkRect(rectangleArray[r*columns + c]);}      
     }      
   }
 }

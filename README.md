@@ -1,5 +1,5 @@
 # Computer Science 172 - Whitworth University
-Author: Brodin Faser, Sam (last name -- oops I actually never asked)
+Author: Brodin Faser, Sam Vaughn
 
 Date: Spring, 2024 
 

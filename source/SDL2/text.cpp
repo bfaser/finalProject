@@ -6,12 +6,7 @@
 
 Text::Text() {}
 
-Text::Text(SDL_Renderer *renderer, const std::string &font_path, int font_size, const std::string &message, const SDL_Color &color) {
-    _text_texture = loadFont(renderer, font_path, font_size, message, color);
-    SDL_QueryTexture(_text_texture, nullptr, nullptr, &_textRectangle.w, &_textRectangle.h);
-}
-
-Text::Text(SDL_Renderer *renderer, const std::string &font_path, int font_size, const std::string &message, const SDL_Color &color, int characterLimit){
+Text::Text(SDL_Renderer *renderer, int font_size, const std::string &message, const SDL_Color &color, int characterLimit, const std::string &font_path){
     this->characterLimit = characterLimit;
     message.substr(0, characterLimit);
     _text_texture = loadFont(renderer, font_path, font_size, message, color);
@@ -33,7 +28,7 @@ void Text::display() const {
 }
 
 void Text::linkRect(Rectangle targetRectangle) {
-    _textRectangle = targetRectangle.rectObject();
+    _textRectangle = targetRectangle.getRectObject();
     _linked = true;
 }
 
@@ -57,7 +52,7 @@ SDL_Texture *Text::loadFont(SDL_Renderer *renderer, const std::string &font_path
     return text_texture;
 }
 
-void Text::defineObj(SDL_Renderer *renderer, const std::string &font_path, int font_size, const std::string &message, const SDL_Color &color, int characterLimit) {
+void Text::defineObj(SDL_Renderer *renderer, int font_size, const std::string &message, const SDL_Color &color, int characterLimit, const std::string &font_path) {
     this->characterLimit = characterLimit;
     if (characterLimit > 0) {
         message.substr(0, characterLimit);

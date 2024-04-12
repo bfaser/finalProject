@@ -6,10 +6,36 @@
 #include "..\headers\SDL2\rectangle.hpp"
 #include "..\headers\SDL2\text.hpp"
 
-void pollEvents(Window &window);
-void gridOfRects(Window &window, int placement[], SDL_Color color, Rectangle rectangleArray[], bool multiBuffer, Text rectangleText[]);
 
-int showGraphics ();
+// Rendering Functions (reusable)
+void pollEvents(Window &window);
+
+/*  (void) gridCreate Function
+    gridCreate function produces a display of (rows) x (columns) rectangles
+    rows = placement[0]
+    columns = placement[1]
+    For multiBuffer boolean value as false, 
+        placement[2] will be the top, bottom and side buffer, where the grid will not be drawn onto
+        there is no separation of grid cells (no buffer between cells)
+    When multibuffer is true,
+        placement[2] will be the top buffer width in pixels
+        placement[3] will be the bottom buffer width in pixels
+        placement[4] will be the side buffer width in pixels
+        placement[5] will be the cell-to-cell buffer width in pixels
+    rectangleText is an array of strings in the test class that are to be rendered at the center of the each grid cell
+    Since an array of rectangle objects is passed in, the objects themselves are modified, hence the void return of the function
+*/  
+
+void gridCreate(Window &window, int placement[], SDL_Color color, Rectangle rectangleArray[], bool multiBuffer = false, Text rectangleText[] = nullptr);
+
+
+
+// Games and Windows
+int showGraphics (); // Possibly convert to the sign-in page
 int showWordle (std::string fiveLetter[]);
+
+// Sign-in window function
+// Connections window function
+// Hangman window function
 
 #endif

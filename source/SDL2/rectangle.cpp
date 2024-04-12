@@ -9,10 +9,7 @@ Rectangle::Rectangle(int w, int h, int position[], SDL_Color color):
     _x = position[0];
     _y = position[1];
 
-    _r = color.r;
-    _g = color.g;
-    _b = color.b;
-    _a=  color.a;
+    _color = color;
 
     _rectangle.w = _w;
     _rectangle.h = _h;
@@ -27,10 +24,7 @@ Rectangle::Rectangle() {
     _x = 0;
     _y = 0;
 
-    _r = 0;
-    _g = 0;
-    _b = 0;
-    _a =  0;
+    _color = {0,0,0,0};
 
     _rectangle.w = _w;
     _rectangle.h = _h;
@@ -72,7 +66,7 @@ void Rectangle::draw() {
         SDL_RenderCopy(Window::renderer, _texture, nullptr, &_rectangle);
     }
     else {
-        SDL_SetRenderDrawColor(Window::renderer, _r, _g, _b, _a);
+        SDL_SetRenderDrawColor(Window::renderer, _color.r, _color.g, _color.b, _color.a);
         SDL_RenderFillRect(Window::renderer, &_rectangle);
     }
 }
@@ -84,10 +78,7 @@ void Rectangle::define(int w, int h, int positionX, int positionY, SDL_Color col
     _x = positionX;
     _y = positionY;
 
-    _r = color.r;
-    _g = color.g;
-    _b = color.b;
-    _a=  color.a;
+    _color = color;
 
     _rectangle.w = _w;
     _rectangle.h = _h;
@@ -95,6 +86,24 @@ void Rectangle::define(int w, int h, int positionX, int positionY, SDL_Color col
     _rectangle.y = _y - (_h / 2);
 }
 
-SDL_Rect Rectangle::rectObject() const {
+SDL_Color Rectangle::getColor() const {
+    return _color;
+}
+
+SDL_Rect Rectangle::getRectObject() const {
     return _rectangle;
+}
+
+void Rectangle::setColor(SDL_Color color) {
+    _color = color;
+}
+
+void Rectangle::setPosition (int position[]) {
+    _x = position[0];
+    _y = position[1];
+}
+
+void Rectangle::setDimensions (int w, int h) {
+    _w = w; 
+    _h = h;
 }
