@@ -39,8 +39,27 @@ Once all the cells are <span style="color:green">green</span>, the game is over 
 If the user goes through **5** iterations of this process without guessing the target word, the user loses the game.
 
 ### Connections
+Connections is another New York Times mini-game, similar to Wordle.
+Connections has a 4x4 grid of cells that each have a word in them.
+The Goal of Connections is to find 4 cells that have a something in common, determined behind the scenes at the beginning of the game. 
+When the user selects four cells they believe to have a commonality, they are able to submit this via the *Enter* button.
+However, a user only gets to check and submit **4** incorrect guesses before losing the game
+(A submission of 4 cells with a common trait does *not* count towards this).
+If the user submits 4 cells with common traits, those cells migrate to the 1st available row, merge together, and display the secret common trait.
+If the user is unable to find all the hidden traits within the alloted guesses, the traits are shown and the user loses the game.
 
 ### Hangman
+Hangman is one of the most popular and well-known word-guessing games.
+A simple explanation of how to play is to guess the hidden word letter-by-letter with less than **5** incorrect guesses.
+Before any guesses, there will be blank spaces corresponding to the number of letters in the hidden word.
+After each guess, the submitted letter will be checked against the hidden word.
+If the letter is within that word, the space corresponding to that letter will be filled in with the guessed letter. 
+Every occurrence of that letter will be filled in.
+If the letter is not found within the word, one of the **5** incorrect guesses will be used and a graphical representation of this will be drawn. 
+Since this is a school project, it seems inappropriate to draw a hangman as the graphical representation.
+<span style = "color:red">SUBSTITUTE GRAPHIC</span>.
+The user wins the game if the hidden word is guessed before running out of incorrect guesses. 
+If the user is not able to guess the hidden word before running out of guesses, the user loses.
 
 ### Crossword
 
