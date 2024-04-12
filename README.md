@@ -33,9 +33,9 @@ For rendering, a window will be opened from the main menu window that will displ
 
 Submission of the guessed 5-letter word will be submitted using the enter key.
 This will be checked against a text document of valid 5-letter words. If the word is found to be a valid word, it will be compared against the target, secret word.
-For every correct letter in the incorrect place, the cell containing that letter will turn <span style="color:orange">orange</span>.
-For every correct letter in the correct place, the cell containing that letter will turn <span style="color:green">green</span>. 
-Once all the cells are <span style="color:green">green</span>, the game is over and won. 
+For every correct letter in the incorrect place, the cell containing that letter will turn $\textcolor{orange}{orange}$.
+For every correct letter in the correct place, the cell containing that letter will turn $\textcolor{green}{green}$. 
+Once all the cells are $\textcolor{green}{green}$, the game is over and won. 
 If the user goes through **5** iterations of this process without guessing the target word, the user loses the game.
 
 ### Connections
@@ -57,7 +57,7 @@ If the letter is within that word, the space corresponding to that letter will b
 Every occurrence of that letter will be filled in.
 If the letter is not found within the word, one of the **5** incorrect guesses will be used and a graphical representation of this will be drawn. 
 Since this is a school project, it seems inappropriate to draw a hangman as the graphical representation.
-<span style = "color:red">SUBSTITUTE GRAPHIC</span>.
+$\textcolor{red}{SUBSTITUTE\ GRAPHIC}$.
 The user wins the game if the hidden word is guessed before running out of incorrect guesses. 
 If the user is not able to guess the hidden word before running out of guesses, the user loses.
 
