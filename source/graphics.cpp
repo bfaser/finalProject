@@ -4,24 +4,41 @@
 #include "..\headers\SDL2\rectangle.hpp"
 #include "..\headers\SDL2\text.hpp"
 
+
+// Convert this into the sign-in page ? 
+// It could look pretty cool to make the background of every page the Whitworth logo...watermark???
 int showGraphics () {
-  Window window("S\'GO BUCS", 640, 480);
-  int position[2] = {640 / 2, 480 / 2};
+  // Create the window object and define the width / height of window
+  int windowWidth = 640, windowHeight = 480;
+  Window window("S\'GO BUCS", windowWidth, windowHeight);
+
+  // Create the Whitworth flag logo and center it
+  int position[2] = {windowWidth / 2, windowHeight / 2};
   Rectangle rectangle(400, 400, position, "assets/whitworth-university_logo.png");
+
+  // Text saying "Whitworth Pirates" 
   Text text(Window::renderer, "assets/times.ttf", 30, "Whitwoth Pirates", {0, 0, 0, 255});
 
-  SDL_Color backroundColor = {255,255,255,255};
+  // Generic Background color to fill the screen with after every iteration of the loop
+  SDL_Color backgroundColor = {255,255,255,255};
 
+  // Main loop for display -> Can define more ways to close application in the window class pollEvents() function
   while (!window.isClosed()) {
-      pollEvents(window);
-      rectangle.draw();
-      text.display(600 / 2, 125, Window::renderer);
-      window.clear(backroundColor);
+    // Take in the user inputs -> define more under window class
+    pollEvents(window);
+    // Present the renderer with whatever here
+    rectangle.draw();
+    text.display(windowWidth / 2 - 20, windowHeight / 2 - 150, Window::renderer);
+
+    // Draw the presented items first, then add background behind them using widow.clear(SDL_Color background-color) function
+    window.clear(backgroundColor);
   }
   return 0;
 }
 
-
+// Rework so that the input to the showWordle function is checked every frame and updated
+// This rework will make it MUCH easier to get the typed letters to appear on the screen
+// Add comments to this function as you refactor and rework -> it will help a TON in the long run
 int showWordle (std::string fiveLetter[]) {
   int windowWidth = 640, windowHeight = 480;
   Window wordleWindow("Wordle", windowWidth, windowHeight);
@@ -51,14 +68,14 @@ int showWordle (std::string fiveLetter[]) {
 
 
   gridOfRects(wordleWindow, placement, grey, rectangleArray, true, rectangleText);
-  SDL_Color backroundColor = {100,100,100,255};
+  SDL_Color backgroundColor = {100,100,100,255};
   while (!wordleWindow.isClosed()) {
       pollEvents(wordleWindow);
       for (int i = 0; i < (rows*columns); i++) {
         rectangleArray[i].draw();
         rectangleText[i].display();
       }
-      wordleWindow.clear(backroundColor);
+      wordleWindow.clear(backgroundColor);
   }
   return 0;
 }
@@ -86,6 +103,8 @@ rectArray[rows * columns]
 bool multiBuffer - buffers expands to top buffer, bottom buffer, side buffers, and between-cell buffer
 
 */
+
+// Add comments to this function so that it is easier to reuse (e.g. connections renderer)
 
 void gridOfRects(Window &window, int placement[], SDL_Color color, Rectangle rectangleArray[], bool multiBuffer, Text rectangleText[]) {
   int width, height, rows, columns,buffer;
