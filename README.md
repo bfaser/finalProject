@@ -2,22 +2,32 @@
 Author: Brodin Faser, Sam Vaughn
 
 Date: Spring, 2024 
+<!-- April - May, 2024 -->
 
 ## Table of Contents
 
 - [Computer Science 172 - Whitworth University](#computer-science-172---whitworth-university)
   - [Table of Contents](#table-of-contents)
-  - [Structure](#structure)
+  - [Structure and Overview](#structure-and-overview)
   - [Main Menu](#main-menu)
   - [Games](#games)
     - [Wordle](#wordle)
     - [Connections](#connections)
     - [Hangman](#hangman)
-    - [Crossword](#crossword)
+    - [Snake](#snake)
+    - [Minesweeper](#minesweeper)
+    - [Sudoku](#sudoku)
   - [Other Core Features](#other-core-features)
     - [User System](#user-system)
+  - [Acknowledgments](#acknowledgments)
 
-## Structure
+## Structure and Overview
+
+<!-- 
+C++ project with underlying SDL2 Framework. 
+Emphasis on object oriented programming and code readability. 
+
+-->
 
 ## Main Menu
 
@@ -61,7 +71,13 @@ $\textcolor{red}{SUBSTITUTE\ GRAPHIC}$.
 The user wins the game if the hidden word is guessed before running out of incorrect guesses. 
 If the user is not able to guess the hidden word before running out of guesses, the user loses.
 
-### Crossword
+<!-- ### Crossword -->
+  
+### Snake 
+
+### Minesweeper
+
+### Sudoku 
 
 ## Other Core Features
 
@@ -71,3 +87,7 @@ Aside from the games, there are a few other core features that this program inte
 
 This program will use a sign-in system, where new users are able to create a username and password, then log-in later as a pre-existing user with the same login credentials.
 This will be done through the use of a user text file. 
+
+## Acknowledgments
+
+For the wordle valid words list, we used Github user dracos' public repository of valid words. The link to ths repository can be found here: https://gist.github.com/dracos/dd0668f281e685bad51479e5acaadb93.

@@ -59,25 +59,27 @@ int showWordle (std::string fiveLetter[]) {
 
   // Wrapping the above specifications into a single array to pass into the gradCreate function
   int placement[6] = {rows, columns, topBuffer, bottomBuffer, sideBuffer, cellBuffer};
-  // Generates a generic 
+  // Generates a generic rectangle object, will be defined later using the gridCreate function
   Rectangle rectangleArray[rows*columns];
 
-
+  // Generic text array
   Text rectangleText[rows*columns];
   std::string letter;
   
+  // Populating the text array with the corresponding characters for wordle
   for (int i = 0; i < (rows*columns); i++) {
     letter = "";
     char l = fiveLetter[i / rows][i % rows];
     letter += l;
-    rectangleText[i].defineObj(Window::renderer, 30, letter, black, 1);
+    rectangleText[i].defineObj(Window::renderer, 60, letter, black, 1);
   }
 
 
-  gridCreate(wordleWindow, placement, grey, rectangleArray , true, rectangleText);
+  
   SDL_Color backgroundColor = {100,100,100,255};
   while (!wordleWindow.isClosed()) {
       pollEvents(wordleWindow);
+      gridCreate(wordleWindow, placement, grey, rectangleArray , true, rectangleText);
       for (int i = 0; i < (rows*columns); i++) {
         rectangleArray[i].draw();
         rectangleText[i].display();
@@ -155,3 +157,12 @@ void gridCreate(Window &window, int placement[], SDL_Color color, Rectangle rect
     }      
   }
 }
+
+/*
+  Text textArray[rows][columns] - array of text objects that need to be defined
+  std::stringArray[rows] - string of values to be linked to the text objects
+    the size of each entry in the stringArray will be of length (columns) for wordle specifically
+  int dimensions[2] - gives the rows (1st entry) and the columns (2nd entry) 
+*/
+
+void writeTexts (Text textArray[], std::string stringArray[], int dimensions[]);
