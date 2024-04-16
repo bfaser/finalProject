@@ -10,6 +10,7 @@ Rectangle::Rectangle(int w, int h, int position[], SDL_Color color):
     _y = position[1];
 
     _color = color;
+    isButton = false;
 
     _rectangle.w = _w;
     _rectangle.h = _h;
@@ -106,4 +107,34 @@ void Rectangle::setPosition (int position[]) {
 void Rectangle::setDimensions (int w, int h) {
     _w = w; 
     _h = h;
+}
+
+void Rectangle::setButton(bool isButton) {
+    this->isButton = isButton;
+}
+
+bool Rectangle::getButtonState () const {
+    return isButton;
+}
+
+
+bool Rectangle::isClicked(SDL_Event &event) {
+    bool hovered = mouseOver(event);
+    bool clicked = (event.type == SDL_MOUSEBUTTONDOWN);
+    return (hovered && clicked);
+}
+
+bool Rectangle::mouseOver(SDL_Event &event) {
+    int leftSide, rightSide, topSide, bottomSide;
+    leftSide = _x - (_w / 2);
+    rightSide = _x + (_w / 2);
+    topSide = _y - (_h / 2);
+    bottomSide = _y + (_h / 2);
+
+    int mX, mY;
+    mX = event.motion.x;
+    mY = event.motion.y;
+
+    bool inside = (leftSide < mX && mX < rightSide && topSide < mY && mY < bottomSide);
+    return inside;
 }

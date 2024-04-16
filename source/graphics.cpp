@@ -1,3 +1,4 @@
+#include <iostream>
 #include <string>
 #include "..\headers\graphics.hpp"
 #include "..\headers\SDL2\window.hpp"
@@ -11,12 +12,20 @@ int showGraphics () {
   // Create the window object and define the width / height of window
   int windowWidth = 640, windowHeight = 480;
   Window window("S\'GO BUCS", windowWidth, windowHeight);
+  // Define a general event;
+  SDL_Event event;
+  SDL_Color grey = {140,140,140,255};
 
   // Create the Whitworth flag logo and center it
   int position[2] = {windowWidth / 2, windowHeight / 2};
+  int buttonPosition[2] =  {windowWidth / 2, windowHeight - 50}; // Center: x = 320, y = 430
   Rectangle rectangle(400, 400, position, "assets/whitworth-university_logo.png");
+  Rectangle button (200, 50, buttonPosition, grey);
+  Text buttonText (Window::renderer, 60, "Button", {0, 0, 0, 255});
+  buttonText.linkRect(button);
+  button.setButton(true);
 
-  // Text saying "Whitworth Pirates" 
+  // Text "Whitworth Pirates" 
   Text text(Window::renderer, 30, "Whitworth Pirates", {0, 0, 0, 255});
 
   // Generic Background color to fill the screen with after every iteration of the loop
@@ -24,11 +33,21 @@ int showGraphics () {
 
   // Main loop for display -> Can define more ways to close application in the window class pollEvents() function
   while (!window.isClosed()) {
-    // Take in the user inputs -> define more under window class
-    pollEvents(window);
+    // Take in the user inputs -> poll events
+    if (SDL_PollEvent(&event)) {
+      window.pollEvents(event);
+      if (button.isClicked(event)) {
+        // Individual Button Clicking function calls here
+        std::cout<<"Clicked Button!\n";
+      }
+    }
     // Present the renderer with whatever here
     rectangle.draw();
     text.display(windowWidth / 2 - 20, windowHeight / 2 - 150, Window::renderer);
+
+    // Draw Button and the text on button
+    button.draw();
+    buttonText.display();
 
     // Draw the presented items first, then add background behind them using widow.clear(SDL_Color background-color) function
     window.clear(backgroundColor);
@@ -43,6 +62,7 @@ int showWordle (std::string fiveLetter[]) {
   // Initialize Window named "Wordle" with variables windowWidth and windowHeight
   int windowWidth = 640, windowHeight = 480;
   Window wordleWindow("Wordle", windowWidth, windowHeight);
+  SDL_Event event;
   
   // Separate SDL_Colors into their own cpp file? That way they are all unified
   SDL_Color grey = {140,140,140,255}; // Color grey in r,g,b,a values
@@ -78,7 +98,11 @@ int showWordle (std::string fiveLetter[]) {
   
   SDL_Color backgroundColor = {100,100,100,255};
   while (!wordleWindow.isClosed()) {
-      pollEvents(wordleWindow);
+
+      if (SDL_PollEvent(&event)) {
+        wordleWindow.pollEvents(event);
+      }
+
       gridCreate(wordleWindow, placement, grey, rectangleArray , true, rectangleText);
       for (int i = 0; i < (rows*columns); i++) {
         rectangleArray[i].draw();
@@ -87,15 +111,6 @@ int showWordle (std::string fiveLetter[]) {
       wordleWindow.clear(backgroundColor);
   }
   return 0;
-}
-
-void pollEvents(Window &window) {
-  SDL_Event event;
-
-  if (SDL_PollEvent(&event)) {
-
-    window.pollEvents(event);
-  }
 }
 
 /*

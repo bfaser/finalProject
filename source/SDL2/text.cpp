@@ -17,6 +17,9 @@ void Text::display(int x, int y, SDL_Renderer *renderer) const {
     if (!_linked) {
         _textRectangle.x = x - (_textRectangle.w / 2);
         _textRectangle.y = y - (_textRectangle.h / 2);
+
+        _textRectangle.w /= 2;
+        _textRectangle.h /= 2;
     }
 
     SDL_RenderCopy(renderer, _text_texture, nullptr, &_textRectangle);

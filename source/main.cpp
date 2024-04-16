@@ -10,8 +10,8 @@ int main () {
   std::string test = "WhitW";
   std::string fiveLetter[5] = {test, placeHolder, placeHolder, placeHolder, placeHolder};
 
-  // showGraphics();
-  showWordle(fiveLetter);
+  showGraphics();
+  // showWordle(fiveLetter);
 }
 
 // Basic to-do list for immediate future
