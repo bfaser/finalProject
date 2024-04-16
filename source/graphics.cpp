@@ -12,8 +12,6 @@ int showGraphics () {
   // Create the window object and define the width / height of window
   int windowWidth = 640, windowHeight = 480;
   Window window("S\'GO BUCS", windowWidth, windowHeight);
-  // Define a general event;
-  SDL_Event event;
   SDL_Color grey = {140,140,140,255};
 
   // Create the Whitworth flag logo and center it
@@ -34,13 +32,8 @@ int showGraphics () {
   // Main loop for display -> Can define more ways to close application in the window class pollEvents() function
   while (!window.isClosed()) {
     // Take in the user inputs -> poll events
-    if (SDL_PollEvent(&event)) {
-      window.pollEvents(event);
-      if (button.isClicked(event)) {
-        // Individual Button Clicking function calls here
-        std::cout<<"Clicked Button!\n";
-      }
-    }
+    pollEvent(window, &button);
+
     // Present the renderer with whatever here
     rectangle.draw();
     text.display(windowWidth / 2 - 20, windowHeight / 2 - 150, Window::renderer);
@@ -55,6 +48,17 @@ int showGraphics () {
   return 0;
 }
 
+void pollEvent (Window &window, Rectangle buttonArray[]) {
+  SDL_Event event;
+  if (SDL_PollEvent(&event)) {
+      window.pollEvents(event);
+      if (buttonArray[0].isClicked(event)) {
+        // Individual Button Clicking function calls here
+        std::cout<<"Clicked Button!\n";
+      }
+    }
+}
+
 // Rework so that the input to the showWordle function is checked every frame and updated
 // This rework will make it MUCH easier to get the typed letters to appear on the screen
 // Add comments to this function as you refactor and rework -> it will help a TON in the long run
@@ -62,11 +66,10 @@ int showWordle (std::string fiveLetter[]) {
   // Initialize Window named "Wordle" with variables windowWidth and windowHeight
   int windowWidth = 640, windowHeight = 480;
   Window wordleWindow("Wordle", windowWidth, windowHeight);
-  SDL_Event event;
   
   // Separate SDL_Colors into their own cpp file? That way they are all unified
   SDL_Color grey = {140,140,140,255}; // Color grey in r,g,b,a values
-  SDL_Color black = {0, 0, 0, 255};
+  // SDL_Color black = {0, 0, 0, 255}; // color black in rg,b,a values
   
   // Components to the placement vector, specifying rows, columns and buffers
   int rows, columns, topBuffer, bottomBuffer, sideBuffer, cellBuffer; 
@@ -85,32 +88,44 @@ int showWordle (std::string fiveLetter[]) {
   // Generic text array
   Text rectangleText[rows*columns];
   std::string letter;
-  
+
+
   // Populating the text array with the corresponding characters for wordle
-  for (int i = 0; i < (rows*columns); i++) {
-    letter = "";
-    char l = fiveLetter[i / rows][i % rows];
-    letter += l;
-    rectangleText[i].defineObj(Window::renderer, 60, letter, black, 1);
-  }
-
-
+  writeTexts(rectangleText, fiveLetter, placement);
+  gridCreate(wordleWindow, placement, grey, rectangleArray , true, rectangleText);
   
+  SDL_StartTextInput();
   SDL_Color backgroundColor = {100,100,100,255};
   while (!wordleWindow.isClosed()) {
-
-      if (SDL_PollEvent(&event)) {
-        wordleWindow.pollEvents(event);
-      }
-
-      gridCreate(wordleWindow, placement, grey, rectangleArray , true, rectangleText);
+      pollWordleEvents(wordleWindow, fiveLetter);
       for (int i = 0; i < (rows*columns); i++) {
         rectangleArray[i].draw();
         rectangleText[i].display();
       }
       wordleWindow.clear(backgroundColor);
   }
+  SDL_StopTextInput();
   return 0;
+}
+
+void pollWordleEvents (Window &window, std::string inputString[]) {
+  SDL_Event event;
+
+  int trial = 0;
+  if (SDL_PollEvent(&event)) {
+      window.pollEvents(event);
+      if (event.type == SDL_TEXTINPUT || event.type == SDL_KEYDOWN) {
+        if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_BACKSPACE && inputString[trial].length() > 0) {
+          inputString[trial] = inputString[trial].substr(0, inputString[trial].length() - 1);
+          std::cout<<inputString[trial]+"\n";
+        }
+        else if (event.type == SDL_TEXTINPUT) {
+          inputString[trial] += event.text.text;
+          std::cout<<inputString[trial]+"\n";
+        }
+        
+      }
+    }
 }
 
 /*
@@ -178,6 +193,21 @@ void gridCreate(Window &window, int placement[], SDL_Color color, Rectangle rect
   std::stringArray[rows] - string of values to be linked to the text objects
     the size of each entry in the stringArray will be of length (columns) for wordle specifically
   int dimensions[2] - gives the rows (1st entry) and the columns (2nd entry) 
+  SDL_Color color - color of the text
+  int charLimit - character limit for the textboxes
 */
 
-void writeTexts (Text textArray[], std::string stringArray[], int dimensions[]);
+void writeTexts (Text textArray[], std::string stringArray[], int dimensions[], SDL_Color color, int charLimit) {
+  int rows = dimensions[0];
+  int columns = dimensions[1];
+  std::string letter;
+  for (int r = 0; r < rows; r++) {
+    for (int c = 0; c < columns; c++) {
+      // std::cout<<stringArray[r][c]<<" ";
+      std::string string = "";
+      string += stringArray[r][c];
+      textArray[r*columns + c].defineObj(Window::renderer, 60, string, color, charLimit);
+    }
+    // std::cout<<std::endl;
+  }
+}

@@ -8,7 +8,6 @@
 
 
 // Rendering Functions (reusable)
-void pollEvents(Window &window);
 
 /*  (void) gridCreate Function
     gridCreate function produces a display of (rows) x (columns) rectangles
@@ -28,11 +27,13 @@ void pollEvents(Window &window);
 
 void gridCreate(Window &window, int placement[], SDL_Color color, Rectangle rectangleArray[], bool multiBuffer = false, Text rectangleText[] = nullptr);
 
-
+void writeTexts (Text textArray[], std::string stringArray[], int dimensions[], SDL_Color color = {0,0,0,255}, int charLimit = 1);
 
 // Games and Windows
 int showGraphics (); // Possibly convert to the sign-in page
+void pollEvent (Window &window, Rectangle buttonArray[]);
 int showWordle (std::string fiveLetter[]);
+void pollWordleEvents (Window &window, std::string inputString[]);
 
 // Sign-in window function
 // Connections window function
