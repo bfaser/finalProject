@@ -98,6 +98,7 @@ int showWordle (std::string fiveLetter[]) {
   SDL_Color backgroundColor = {100,100,100,255};
   while (!wordleWindow.isClosed()) {
       pollWordleEvents(wordleWindow, fiveLetter);
+
       for (int i = 0; i < (rows*columns); i++) {
         rectangleArray[i].draw();
         rectangleText[i].display();
@@ -119,7 +120,10 @@ void pollWordleEvents (Window &window, std::string inputString[]) {
           inputString[trial] = inputString[trial].substr(0, inputString[trial].length() - 1);
           std::cout<<inputString[trial]+"\n";
         }
-        else if (event.type == SDL_TEXTINPUT) {
+        else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_KP_ENTER) {
+          std::cout<<"Hello World\n";
+        }
+        else if (event.type == SDL_TEXTINPUT && inputString[trial].length() < 5) {
           inputString[trial] += event.text.text;
           std::cout<<inputString[trial]+"\n";
         }
