@@ -8,8 +8,8 @@ Text::Text() {}
 
 Text::Text(SDL_Renderer *renderer, int font_size, const std::string &message, const SDL_Color &color, int characterLimit, const std::string &font_path){
     this->characterLimit = characterLimit;
-    message.substr(0, characterLimit);
-    _text_texture = loadFont(renderer, font_path, font_size, message, color);
+    std::string newMessage = message.substr(0, characterLimit);
+    _text_texture = loadFont(renderer, font_path, font_size, newMessage, color);
     SDL_QueryTexture(_text_texture, nullptr, nullptr, &_textRectangle.w, &_textRectangle.h);
 }
 
@@ -62,9 +62,12 @@ SDL_Texture *Text::loadFont(SDL_Renderer *renderer, const std::string &font_path
 
 void Text::defineObj(SDL_Renderer *renderer, int font_size, const std::string &message, const SDL_Color &color, int characterLimit, const std::string &font_path) {
     this->characterLimit = characterLimit;
+    std::string newMessage;
     if (characterLimit > 0) {
-        message.substr(0, characterLimit);
+        newMessage = message.substr(0, characterLimit);
+    } else {
+        newMessage = message;
     }
-    _text_texture = loadFont(renderer, font_path, font_size, message, color);
+    _text_texture = loadFont(renderer, font_path, font_size, newMessage, color);
     SDL_QueryTexture(_text_texture, nullptr, nullptr, &_textRectangle.w, &_textRectangle.h);
 }
