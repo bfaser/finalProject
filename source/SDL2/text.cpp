@@ -17,9 +17,6 @@ void Text::display(int x, int y, SDL_Renderer *renderer) const {
     if (!_linked) {
         _textRectangle.x = x - (_textRectangle.w / 2);
         _textRectangle.y = y - (_textRectangle.h / 2);
-
-        _textRectangle.w /= 2;
-        _textRectangle.h /= 2;
     }
 
     SDL_RenderCopy(renderer, _text_texture, nullptr, &_textRectangle);
@@ -31,7 +28,15 @@ void Text::display() const {
 }
 
 void Text::linkRect(Rectangle targetRectangle) {
-    _textRectangle = targetRectangle.getRectObject();
+    SDL_Rect textRectangle = targetRectangle.getRectObject();
+    int x, y;
+    x = textRectangle.x + textRectangle.w / 2;
+    y = textRectangle.y + textRectangle.h / 2;
+    textRectangle.w /= 1.5;
+    textRectangle.h /= 1.5;
+    textRectangle.x = x - textRectangle.w / 2;
+    textRectangle.y = y - textRectangle.h / 2;
+    _textRectangle = textRectangle;
     _linked = true;
 }
 
