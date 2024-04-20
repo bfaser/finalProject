@@ -3,8 +3,6 @@
 #include "../SDL2/include/SDL2/SDL_ttf.h"
 #include "../headers/SDL2/window.hpp"
 
-#include "../headers/graphics.hpp"
-
 
 SDL_Renderer *Window::renderer = nullptr;
 

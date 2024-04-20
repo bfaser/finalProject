@@ -9,6 +9,7 @@
 
 // Rendering Functions (reusable)
 
+char upper (char* input);
 /*  (void) gridCreate Function
     gridCreate function produces a display of (rows) x (columns) rectangles
     rows = placement[0]

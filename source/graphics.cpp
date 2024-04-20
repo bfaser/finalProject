@@ -77,7 +77,7 @@ int showWordle (std::string fiveLetter[]) {
   columns = 5; // Number of cells per row
   topBuffer = 40; // In pixels, specifies space from top of window
   bottomBuffer = 1; // In pixels, specifies space from bottom of window
-  sideBuffer = 20; // In pixels, specifies space from the sides of the window, symmetric
+  sideBuffer = 50; // In pixels, specifies space from the sides of the window, symmetric
   cellBuffer = 1; // In pixels, specifies the separation between cells both horizontally and vertically
 
   // Wrapping the above specifications into a single array to pass into the gradCreate function
@@ -115,16 +115,21 @@ void pollWordleEvents (Window &window, std::string inputString[]) {
   int trial = 0;
   if (SDL_PollEvent(&event)) {
       window.pollEvents(event);
+      // Text Input
       if (event.type == SDL_TEXTINPUT || event.type == SDL_KEYDOWN) {
+        //  If the key is backspace, delete last character
         if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_BACKSPACE && inputString[trial].length() > 0) {
           inputString[trial] = inputString[trial].substr(0, inputString[trial].length() - 1);
           std::cout<<inputString[trial]+"\n";
         }
-        else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_KP_ENTER) {
+        // If key is enter key, call submission function (to be written)
+        else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_RETURN) {
           std::cout<<"Hello World\n";
+          // Submit Function
         }
+        // If its any other character, add to the string (if less than 5 characters long)
         else if (event.type == SDL_TEXTINPUT && inputString[trial].length() < 5) {
-          inputString[trial] += event.text.text;
+          inputString[trial] += upper(event.text.text);
           std::cout<<inputString[trial]+"\n";
         }
         
@@ -214,4 +219,10 @@ void writeTexts (Text textArray[], std::string stringArray[], int dimensions[], 
     }
     // std::cout<<std::endl;
   }
+}
+char upper (char* input) {
+  if (*input >= 97){
+      *input -= 'a' - 'A';
+  }
+  return *input;
 }

@@ -15,6 +15,7 @@
                 "-ggdb",
                 "\"${workspaceFolder}\"/source/*.cpp",
                 "\"${workspaceFolder}\"/source/SDL2/*.cpp",
+                "\"${workspaceFolder}\"/source/games/*.cpp",
                 "-L\"${workspaceFolder}\"/SDL2/include/SDL2",
                 "-L\"${workspaceFolder}\"/SDL2/lib",
                 "-Wall",

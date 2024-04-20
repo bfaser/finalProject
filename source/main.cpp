@@ -1,17 +1,21 @@
 #include <iostream>
 #include <string>
+#include <random>
+#include <ctime>
 #include "..\headers\graphics.hpp"
+#include "..\headers\games\wordle.hpp"
 
 // Refactor so there is a wordle class / implementation class
 // Basically, clean up the main function so that it is as simple as possible
 
 int main () {
+  srand(time(0));
   std::string placeHolder = "     ";
   std::string test = "WhitW";
   std::string fiveLetter[5] = {test, placeHolder, placeHolder, placeHolder, placeHolder};
-
-  showGraphics();
-  // showWordle(fiveLetter);
+  Wordle wordle;
+  // showGraphics();
+  showWordle(fiveLetter);
 }
 
 // Basic to-do list for immediate future
@@ -21,6 +25,7 @@ int main () {
 // Create a button class and dynamic display (show the keyboard inputs on GUI)
 
 // The wordleWordsList will be populated at the program's initialization (passed around)
+// Use a binary search algorithm to make more efficient word search
 
 /* bool validWord (std::string submittedWord, list<string>  wordleWordsList) {
   // char count = 1st char
