@@ -72,6 +72,10 @@ void Window::clear(SDL_Color color) {
     SDL_RenderClear(renderer);
 }
 
+void Window::close() {
+    _closed = true;
+}
+
 void Window::pollEvents(SDL_Event &event) {
         switch (event.type) {
             case SDL_QUIT:

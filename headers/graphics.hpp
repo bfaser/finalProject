@@ -5,11 +5,14 @@
 #include "..\headers\SDL2\window.hpp"
 #include "..\headers\SDL2\rectangle.hpp"
 #include "..\headers\SDL2\text.hpp"
+#include "..\headers\games\wordle.hpp"
 
 
 // Rendering Functions (reusable)
 
-char upper (char* input);
+std::string checkStringLength (std::string inputString, int charLength);
+
+char lower (char* input);
 /*  (void) gridCreate Function
     gridCreate function produces a display of (rows) x (columns) rectangles
     rows = placement[0]
@@ -26,18 +29,24 @@ char upper (char* input);
     Since an array of rectangle objects is passed in, the objects themselves are modified, hence the void return of the function
 */  
 
-void gridCreate(Window &window, int placement[], SDL_Color color, Rectangle rectangleArray[], bool multiBuffer = false, Text rectangleText[] = nullptr);
+void gridCreate(Window &window, int placement[], SDL_Color color[], Rectangle rectangleArray[], bool multiBuffer = false, Text rectangleText[] = nullptr);
 
 void writeTexts (Text textArray[], std::string stringArray[], int dimensions[], SDL_Color color = {0,0,0,255}, int charLimit = 1);
 
 // Games and Windows
 int showGraphics (); // Possibly convert to the sign-in page
 void pollEvent (Window &window, Rectangle buttonArray[]);
-int showWordle (std::string fiveLetter[]);
-void pollWordleEvents (Window &window, std::string inputString[]);
+int showWordle (Wordle &wordleInstance);
+void pollWordleEvents (Window &window, std::string inputString[], int& trial, Wordle &wordleInstance);
+bool wordleSubmit (Wordle &wordleInstance, std::string enteredWord, int trial);
 
 // Sign-in window function
 // Connections window function
 // Hangman window function
+
+template <typename Type> 
+int binarySearch (Type key, std::vector<Type> array);
+template <typename Type>
+int binarySearch (std::vector<Type> array, Type key, int low, int high);
 
 #endif

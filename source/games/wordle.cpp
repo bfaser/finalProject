@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 
+#include "../SDL2/include/SDL2/SDL.h"
 #include "../headers/games/wordle.hpp"
 #include "../headers/graphics.hpp"
 
@@ -27,17 +28,18 @@ Wordle::Wordle() {
     if (validWords.size() == 0) {
         initWordsVec();
     }
-    std::cout << validWords.size();
+    for (int i = 0; i < 25; i++) {
+        color[i] = {140,140,140,255};
+    }
+
+    std::cout << secretWord;
 }
 
-int Wordle::play() {
-    // Open file
+std::vector<std::string> Wordle::getWordsVec() const {
+    return validWords;
+}
 
-    // Choose a random word from word list and store it as secretWord
 
-    // Close file
-
-    // number of guesses reset to 0
-    
-    // Display Game and Play
+std::string Wordle::getSecretWord() const {
+    return secretWord;
 }

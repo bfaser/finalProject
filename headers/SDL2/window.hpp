@@ -20,6 +20,7 @@ public:
     Window(const std::string &title, int width, int height);
     ~Window();
 
+    void  close ();
     bool isClosed() const;
     void pollEvents(SDL_Event &event);
     void clear(SDL_Color color);

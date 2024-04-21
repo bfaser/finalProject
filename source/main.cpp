@@ -10,12 +10,10 @@
 
 int main () {
   srand(time(0));
-  std::string placeHolder = "     ";
-  std::string test = "WhitW";
-  std::string fiveLetter[5] = {test, placeHolder, placeHolder, placeHolder, placeHolder};
   Wordle wordle;
+  showWordle(wordle);
   // showGraphics();
-  showWordle(fiveLetter);
+
 }
 
 // Basic to-do list for immediate future
