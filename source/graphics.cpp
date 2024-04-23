@@ -67,11 +67,7 @@ int showWordle (Wordle &wordleInstance) {
   // Initialize Window named "Wordle" with variables windowWidth and windowHeight
   int windowWidth = 640, windowHeight = 480;
   Window wordleWindow("Wordle", windowWidth, windowHeight);
-  
-  // Separate SDL_Colors into their own cpp file? That way they are all unified
-
-  // SDL_Color black = {0, 0, 0, 255}; // color black in rg,b,a values
-  
+    
   // Components to the placement vector, specifying rows, columns and buffers
   int rows, columns, topBuffer, bottomBuffer, sideBuffer, cellBuffer; 
   rows = 5; // Number of  cells stacked vertically
@@ -95,7 +91,7 @@ int showWordle (Wordle &wordleInstance) {
   SDL_StartTextInput();
   SDL_Color backgroundColor = {100,100,100,255};
   while (!wordleWindow.isClosed()) {
-      pollWordleEvents(wordleWindow, wordleInstance.guessedWords, trial, wordleInstance);
+      pollWordleEvents(wordleWindow, trial, wordleInstance);
 
       // Populating the text array with the corresponding characters for wordle
       writeTexts(rectangleText, wordleInstance.guessedWords, placement);
@@ -105,25 +101,36 @@ int showWordle (Wordle &wordleInstance) {
         rectangleArray[i].draw();
         rectangleText[i].display();
       }
+
       wordleWindow.clear(backgroundColor);
+      cleanUpWordle(rectangleArray, rectangleText, (rows*columns));     
   }
   SDL_StopTextInput();
   return 0;
 }
 
-void pollWordleEvents (Window &window, std::string inputString[], int& trial, Wordle &wordleInstance) {
+void pollWordleEvents (Window &window, int& trial, Wordle &wordleInstance) {
   SDL_Event event;
-
+  std::string *inputString = wordleInstance.guessedWords;
   if (SDL_PollEvent(&event)) {
       window.pollEvents(event);
       // Text Input
-      if (event.type == SDL_TEXTINPUT || event.type == SDL_KEYDOWN) {
-        //  If the key is backspace, delete last character
-        if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_BACKSPACE && inputString[trial].length() > 0) {
-          inputString[trial] = inputString[trial].substr(0, inputString[trial].length() - 1);
-        }
-        // If key is enter key, call submission function (to be written)
-        else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_RETURN) {
+      switch (event.type) {
+        case SDL_TEXTINPUT:
+        // If its any character other than return or delete, add to the string (if less than 5 characters long)
+          if (inputString[trial].length() < 5) {
+            inputString[trial] += lower(*event.text.text);
+          }
+        case SDL_KEYDOWN:
+          switch (event.key.keysym.sym) {
+          case  SDLK_BACKSPACE:
+          //  If the key is backspace, delete last character
+            if (inputString[trial].length() > 0) {
+              inputString[trial] = inputString[trial].substr(0, inputString[trial].length() - 1);
+            }
+            break;
+          case SDLK_RETURN:
+          // If key is enter key, check using the submission function
             if (inputString[trial].length() >= 5) {
               // Check function
               bool valid = wordleSubmit(wordleInstance, inputString[trial], trial);
@@ -133,12 +140,9 @@ void pollWordleEvents (Window &window, std::string inputString[], int& trial, Wo
                 trial++;
               }
             }
-        }
-        // If its any other character, add to the string (if less than 5 characters long)
-        else if (event.type == SDL_TEXTINPUT && inputString[trial].length() < 5) {
-          inputString[trial] += lower(event.text.text);
-        }
-        
+          default:
+            break;
+          }
       }
     }
     window.pollEvents(event);
@@ -220,19 +224,18 @@ void writeTexts (Text textArray[], std::string stringArray[], int dimensions[], 
   for (int r = 0; r < rows; r++) {
     std::string bufferedMessage = checkStringLength (stringArray[r], 5);
     for (int c = 0; c < columns; c++) {
-      // std::cout<<stringArray[r][c]<<" ";
       std::string string = "";
-      string += bufferedMessage[c];
+      string = bufferedMessage[c];
       textArray[r*columns + c].defineObj(Window::renderer, 60, string, color, charLimit);
     }
-    // std::cout<<std::endl;
   }
 }
-char lower (char* input) {
-  if (*input < 97){
-      *input += 'a' - 'A';
+
+char lower (char input) {
+  if (input < 97){
+      input += 'a' - 'A';
   }
-  return *input;
+  return input;
 }
 
 std::string checkStringLength (std::string inputString, int charLength) {
@@ -242,7 +245,7 @@ std::string checkStringLength (std::string inputString, int charLength) {
   return inputString;
 }
 
-bool wordleSubmit (Wordle &wordleInstance, std::string enteredWord, int trial) {
+bool wordleSubmit (Wordle &wordleInstance, std::string &enteredWord, int &trial) {
   std::vector<std::string> words = wordleInstance.getWordsVec();
   int isValid = binarySearch(enteredWord, words);
   SDL_Color red = {255,40,0,255};
@@ -256,11 +259,13 @@ bool wordleSubmit (Wordle &wordleInstance, std::string enteredWord, int trial) {
     int index = (int)secretWord.find(enteredWord[i]);
     if (index >= 0) {
       wordleInstance.color[trial*5 + i] = orange;
+      secretWord.erase(index,1);
     }
     else {
       wordleInstance.color[trial*5 + i] = red;
     }
-    if (secretWord[i] == enteredWord[i]) {
+
+    if (wordleInstance.getSecretWord()[i] == enteredWord[i]) {
       wordleInstance.color[trial*5 + i] = green;
     }
   }
@@ -269,12 +274,12 @@ bool wordleSubmit (Wordle &wordleInstance, std::string enteredWord, int trial) {
 
 template <typename Type>
 // Binary Seach function called in Main()
-int binarySearch (Type key, std::vector<Type> array) {
+int binarySearch (Type &key, std::vector<Type> &array) {
     return binarySearch(array, key, 0, array.size() - 1);
 }
 
 template <typename Type>
-int binarySearch (std::vector<Type> array, Type key, int low, int high)
+int binarySearch (std::vector<Type> &array, Type &key, int low, int high)
 {
     int middle = (low + high) / 2;
     // Case where key is NOT in data set
@@ -301,4 +306,11 @@ int binarySearch (std::vector<Type> array, Type key, int low, int high)
         // The middle number IS the key
         return middle;
     }
+}
+
+void cleanUpWordle(Rectangle* rectangleArray, Text* rectangleText, int size) {
+  for (int i = 0; i < size; i++) {
+    rectangleArray[i].~Rectangle();
+    rectangleText[i].~Text();
+  } 
 }

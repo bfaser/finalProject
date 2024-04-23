@@ -14,6 +14,7 @@ private:
     mutable SDL_Rect _textRectangle;
 public:
     Text();
+    ~Text();
     Text(SDL_Renderer *renderer, int font_size, const std::string &message, const SDL_Color &color, int characterLimit = 128, const std::string &font_path = "assets/times.ttf");
     
     static SDL_Texture *loadFont(SDL_Renderer *renderer, const std::string &font_path, int font_size, const std::string &message, const SDL_Color &color);

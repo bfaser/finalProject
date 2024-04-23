@@ -12,7 +12,7 @@
 
 std::string checkStringLength (std::string inputString, int charLength);
 
-char lower (char* input);
+char lower (char input);
 /*  (void) gridCreate Function
     gridCreate function produces a display of (rows) x (columns) rectangles
     rows = placement[0]
@@ -37,16 +37,17 @@ void writeTexts (Text textArray[], std::string stringArray[], int dimensions[], 
 int showGraphics (); // Possibly convert to the sign-in page
 void pollEvent (Window &window, Rectangle buttonArray[]);
 int showWordle (Wordle &wordleInstance);
-void pollWordleEvents (Window &window, std::string inputString[], int& trial, Wordle &wordleInstance);
-bool wordleSubmit (Wordle &wordleInstance, std::string enteredWord, int trial);
+void pollWordleEvents (Window &window, int& trial, Wordle &wordleInstance);
+bool wordleSubmit (Wordle &wordleInstance, std::string &enteredWord, int &trial);
+void cleanUpWordle(Rectangle *rectangleArray, Text* rectangleText, int size);
 
 // Sign-in window function
 // Connections window function
 // Hangman window function
 
 template <typename Type> 
-int binarySearch (Type key, std::vector<Type> array);
+int binarySearch (Type &key, std::vector<Type> &array);
 template <typename Type>
-int binarySearch (std::vector<Type> array, Type key, int low, int high);
+int binarySearch (std::vector<Type> &array, Type &key, int low, int high);
 
 #endif

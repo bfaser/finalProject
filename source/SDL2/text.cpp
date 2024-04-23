@@ -6,6 +6,12 @@
 
 Text::Text() {}
 
+Text::~Text() {
+    if (_text_texture != nullptr) {
+        SDL_DestroyTexture(_text_texture);
+    }
+}
+
 Text::Text(SDL_Renderer *renderer, int font_size, const std::string &message, const SDL_Color &color, int characterLimit, const std::string &font_path){
     this->characterLimit = characterLimit;
     std::string newMessage = message.substr(0, characterLimit);

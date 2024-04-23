@@ -31,8 +31,7 @@ Wordle::Wordle() {
     for (int i = 0; i < 25; i++) {
         color[i] = {140,140,140,255};
     }
-
-    std::cout << secretWord;
+    std::cout << secretWord << std::endl;
 }
 
 std::vector<std::string> Wordle::getWordsVec() const {
