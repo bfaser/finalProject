@@ -20,7 +20,7 @@ int showGraphics () {
   int buttonPosition[2] =  {windowWidth / 2, windowHeight - 50}; // Center: x = 320, y = 430
   Rectangle rectangle(400, 400, position, "assets/whitworth-university_logo.png");
   Rectangle button (200, 50, buttonPosition, grey);
-  Text buttonText (Window::renderer, 60, "Button", {0, 0, 0, 255});
+  Text buttonText (Window::renderer, 60, "Wordle", {0, 0, 0, 255});
   buttonText.linkRect(button);
   button.setButton(true);
 
@@ -33,7 +33,7 @@ int showGraphics () {
   // Main loop for display -> Can define more ways to close application in the window class pollEvents() function
   while (!window.isClosed()) {
     // Take in the user inputs -> poll events
-    pollEvent(window, &button);
+    pollEventMenu(window, &button);
 
     // Present the renderer with whatever here
     rectangle.draw();
@@ -49,24 +49,28 @@ int showGraphics () {
   return 0;
 }
 
-void pollEvent (Window &window, Rectangle buttonArray[]) {
+void pollEventMenu (Window &window, Rectangle buttonArray[]) {
   SDL_Event event;
   if (SDL_PollEvent(&event)) {
       window.pollEvents(event);
       if (buttonArray[0].isClicked(event)) {
         // Individual Button Clicking function calls here
-        std::cout<<"Clicked Button!\n";
+        Wordle instance;
+        showWordle(instance, window);
+        window.close();
       }
+      // else if (buttonArray[1].isClicked(event)) {
+
+      // }
     }
 }
 
 // Rework so that the input to the showWordle function is checked every frame and updated
 // This rework will make it MUCH easier to get the typed letters to appear on the screen
 // Add comments to this function as you refactor and rework -> it will help a TON in the long run
-int showWordle (Wordle &wordleInstance) {
+int showWordle (Wordle &wordleInstance, Window &wordleWindow) {
   // Initialize Window named "Wordle" with variables windowWidth and windowHeight
-  int windowWidth = 640, windowHeight = 480;
-  Window wordleWindow("Wordle", windowWidth, windowHeight);
+  SDL_SetWindowTitle(wordleWindow.window(), "Wordle");
     
   // Components to the placement vector, specifying rows, columns and buffers
   int rows, columns, topBuffer, bottomBuffer, sideBuffer, cellBuffer; 

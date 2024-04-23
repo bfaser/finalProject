@@ -37,7 +37,7 @@ bool Window::init() {
     }
 
     _window = SDL_CreateWindow(_title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, _width, _height, 0);
-
+    
     if (_window == nullptr) {
         std::cerr << "Failed to create window.\n";
         return false;
@@ -74,6 +74,10 @@ void Window::clear(SDL_Color color) {
 
 void Window::close() {
     _closed = true;
+}
+
+SDL_Window* Window::window() {
+    return _window;
 }
 
 void Window::pollEvents(SDL_Event &event) {

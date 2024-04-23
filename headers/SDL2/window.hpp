@@ -26,6 +26,7 @@ public:
     void clear(SDL_Color color);
     int getWidth() const;
     int getHeight() const;
+    SDL_Window* window();
 };
 
 #endif

@@ -10,9 +10,9 @@
 
 int main () {
   srand(time(0));
-  Wordle wordle;
-  showWordle(wordle);
-  // showGraphics();
+  // Wordle wordle;
+  // showWordle(wordle);
+  showGraphics();
 
 }
 

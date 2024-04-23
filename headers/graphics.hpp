@@ -35,8 +35,8 @@ void writeTexts (Text textArray[], std::string stringArray[], int dimensions[], 
 
 // Games and Windows
 int showGraphics (); // Possibly convert to the sign-in page
-void pollEvent (Window &window, Rectangle buttonArray[]);
-int showWordle (Wordle &wordleInstance);
+void pollEventMenu (Window &window, Rectangle buttonArray[]);
+int showWordle (Wordle &wordleInstance, Window &wordleWindow);
 void pollWordleEvents (Window &window, int& trial, Wordle &wordleInstance);
 bool wordleSubmit (Wordle &wordleInstance, std::string &enteredWord, int &trial);
 void cleanUpWordle(Rectangle *rectangleArray, Text* rectangleText, int size);

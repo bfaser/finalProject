@@ -2,7 +2,6 @@
 Author: Brodin Faser, Sam Vaughn
 
 Date: Spring, 2024 
-<!-- April - May, 2024 -->
 
 ## Table of Contents
 
@@ -43,6 +42,7 @@ For rendering, a window will be opened from the main menu window that will displ
 
 Submission of the guessed 5-letter word will be submitted using the enter key.
 This will be checked against a text document of valid 5-letter words. If the word is found to be a valid word, it will be compared against the target, secret word.
+For every incorrect letter, the cell containing that letter will turn $\textcolor{red}{red}$.
 For every correct letter in the incorrect place, the cell containing that letter will turn $\textcolor{orange}{orange}$.
 For every correct letter in the correct place, the cell containing that letter will turn $\textcolor{green}{green}$. 
 Once all the cells are $\textcolor{green}{green}$, the game is over and won. 
