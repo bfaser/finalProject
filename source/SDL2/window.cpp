@@ -6,6 +6,14 @@
 
 SDL_Renderer *Window::renderer = nullptr;
 
+Window::Window () :
+_title(""), _width(640), _height(480)
+{}
+
+Window::Window (const std::string &title) :
+_title(title), _width(640), _height(480)
+{}
+
 Window::Window(const std::string &title, int width, int height):
 _title(title), _width(width), _height(height)
 {
@@ -26,7 +34,7 @@ bool Window::init() {
         return false;
     }
 
-    if (IMG_Init(IMG_INIT_PNG /*| IMG_INIT_JPG*/ ) != IMG_INIT_PNG) {
+    if (IMG_Init(IMG_INIT_PNG /*|| IMG_INIT_JPG*/ ) != IMG_INIT_PNG) {
         std::cerr << "Failed to initialize SDL Image.\n";
         return false;
     }
@@ -76,7 +84,7 @@ void Window::close() {
     _closed = true;
 }
 
-SDL_Window* Window::window() {
+SDL_Window* Window::windowObj() {
     return _window;
 }
 

@@ -13,10 +13,12 @@ private:
     SDL_Window *_window = nullptr;
 
     bool init();
-    
+
 public:
     static SDL_Renderer *renderer;
 
+    Window();
+    Window(const std::string &title);
     Window(const std::string &title, int width, int height);
     ~Window();
 
@@ -26,7 +28,7 @@ public:
     void clear(SDL_Color color);
     int getWidth() const;
     int getHeight() const;
-    SDL_Window* window();
+    SDL_Window* windowObj();
 };
 
 #endif
