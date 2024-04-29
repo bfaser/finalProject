@@ -12,14 +12,15 @@ class Wordle : public Game  {
 private:
     std::string secretWord;
     int currentTry;
-    std::vector<std::string> validWords;
     bool running;
+    std::vector<std::string> validWords;
     std::vector<SDL_Color> color;
     std::vector<std::string> guessedWords;
     
     bool submit (std::string &enteredWord);
     bool pollEvents ();
     void initWordsVec ();
+    void endingState (Window &window);
 public:
     Wordle();
 

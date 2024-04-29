@@ -75,8 +75,14 @@ void Wordle::play (Window &window) {
         // Render the title of the game over the boxes (ensure that title doesn't get covered by the wordle boxes)
         wordleTitle.display(window.getWidth() / 2, 50, Window::renderer);
 
+        endingState(window);
+
         // Draw everything in the render buffer and clear the background with generic color
         window.clear(backgroundColor);
+
+        if (endState != "") {
+            SDL_Delay(2000);
+        }
 
         // This is used to destroy the objects, ensures no memory leak
         cleanUp(wordleCells, wordleText, (maxAttempts * (int)secretWord.length()));
@@ -119,13 +125,16 @@ bool Wordle::pollEvents() {
                 if (secretWord == guessedWords[currentTry]) {
                     // Display Win Screen
                     std::cout << "YOU WON!!!" << std::endl;
+                    endState = "win";
                     // Stop further text input
                     SDL_StopTextInput();
+                    return false;
                 }
                 else if (valid) {
                     currentTry++;
                     if (currentTry >= maxAttempts) {
                     std::cout << "YOU LOST" << std::endl;
+                    endState = "lose";
                     return false;
                     }
                 }
@@ -169,4 +178,19 @@ bool Wordle::submit(std::string &enteredWord) {
         }
     }
     return true;
+}
+
+void Wordle::endingState(Window &window) {
+    if (running) {
+        return;
+    }
+    if (endState == "") {
+        return;
+    }
+    if (endState == "win") {
+        winScreen(window);
+        return;
+    }
+    loseScreen(window);
+    return;
 }
