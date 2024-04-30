@@ -23,7 +23,7 @@ void Wordle::initWordsVec() {
     while (std::getline(textFile, word)) {
         commonWords.emplace_back(word);
     }
-
+    textFile.close();
     int index = rand() % commonWords.size();
     secretWord = commonWords[index];
 }
@@ -117,7 +117,7 @@ bool Wordle::pollEvents() {
             switch (event.key.keysym.sym) {
             case  SDLK_BACKSPACE:
             //  If the key is backspace, delete last character
-                if (guessedWords[currentTry].length() > 0 && secretWord != guessedWords[currentTry]) {
+                if (guessedWords[currentTry].length() > 0) {
                     guessedWords[currentTry] = guessedWords[currentTry].substr(0, guessedWords[currentTry].length() - 1);
                 }
                 break;
@@ -129,16 +129,15 @@ bool Wordle::pollEvents() {
 
                 if (secretWord == guessedWords[currentTry]) {
                     // Display Win Screen
-                    std::cout << "YOU WON!!!" << std::endl;
                     endState = "win";
                     // Stop further text input
                     SDL_StopTextInput();
                     return false;
                 }
                 else if (valid) {
+                    // Increment the 
                     currentTry++;
                     if (currentTry >= maxAttempts) {
-                    std::cout << "YOU LOST" << std::endl;
                     endState = "lose";
                     return false;
                     }
