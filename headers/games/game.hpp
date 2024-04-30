@@ -12,12 +12,11 @@ class Game {
     int maxAttempts;
     std::string endState; // "" represents not the end, "win" represents win state, "lose" represents lose state
     
-    void winScreen(Window &window);
-    void loseScreen(Window &window);
+    void winScreen(Window &window, std::string supplementaryText);
+    void loseScreen(Window &window, std::string supplementaryText);
 
     public: 
     Game();
-
 };
 
 #endif

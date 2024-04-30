@@ -81,7 +81,7 @@ void Wordle::play (Window &window) {
         window.clear(backgroundColor);
 
         if (endState != "") {
-            SDL_Delay(2000);
+            SDL_Delay(4000);
         }
 
         // This is used to destroy the objects, ensures no memory leak
@@ -155,9 +155,9 @@ bool Wordle::pollEvents() {
 
 bool Wordle::submit(std::string &enteredWord) {
     int isValid = binarySearch(validWords, enteredWord, 0, validWords.size() - 1);
-    SDL_Color red = {255,40,0,255};
-    SDL_Color orange = {255,165,0,255};
-    SDL_Color green = {80,200,120,255}; 
+    SDL_Color red = {202, 52, 51, 255};
+    SDL_Color orange = {245, 224, 80,255};
+    SDL_Color green = {123, 182, 97,255}; 
     if (isValid < 0) {
         std::cout << "Invalid Word" << std::endl;
         return false;
@@ -188,9 +188,9 @@ void Wordle::endingState(Window &window) {
         return;
     }
     if (endState == "win") {
-        winScreen(window);
+        winScreen(window, "Score: " + std::to_string(highScore));
         return;
     }
-    loseScreen(window);
+    loseScreen(window, "Secret Word: " + secretWord);
     return;
 }

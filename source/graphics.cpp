@@ -16,9 +16,9 @@ int showGraphics () {
   SDL_Color grey = {140,140,140,255};
 
   // Create the Whitworth flag logo and center it
-  int position[2] = {windowWidth / 2, windowHeight / 2};
+  int position[2] = {windowWidth / 2, windowHeight / 2 - 75};
   int buttonPosition[2] =  {windowWidth / 2, windowHeight - 50}; // Center: x = 320, y = 430
-  Rectangle rectangle(400, 400, position, "assets/whitworth-university_logo.png");
+  Rectangle rectangle(300, 300, position, "assets/whitworth-university_logo.png");
 
   // Wordle Button
   Rectangle wordleButton (200, 50, buttonPosition, grey);
@@ -27,7 +27,7 @@ int showGraphics () {
   wordleButton.setButton(true);
 
   // Hangman Button
-  buttonPosition[1] -= 100;
+  buttonPosition[1] -= 75;
   Rectangle hangmanButton (200, 50, buttonPosition, grey);
   Text hangmanButtonText (Window::renderer, 60, "Hangman", {0, 0, 0, 255});
   hangmanButtonText.linkRect(hangmanButton);
@@ -50,7 +50,7 @@ int showGraphics () {
 
     // Present the renderer with whatever here
     rectangle.draw();
-    text.display(windowWidth / 2 - 20, windowHeight / 2 - 150, Window::renderer);
+    text.display(windowWidth / 2 , windowHeight / 2 - 150, Window::renderer);
 
     // Draw Button and the text on button
     displayMenu(buttonArray, buttonTexts, size);
@@ -80,6 +80,9 @@ void pollEventMenu (Window &window, Rectangle buttonArray[]) {
       // Hangman hangmanInstance;
       // showHangman(hangmanInstance, window);
       std::cout << "Hangman button pressed!" << std::endl;
+    }
+    else {
+      
     }
   }
 }
