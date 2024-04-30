@@ -91,3 +91,5 @@ This will be done through the use of a user text file.
 ## Acknowledgments
 
 For the wordle valid words list, we used Github user dracos' public repository of valid words. The link to ths repository can be found here: https://gist.github.com/dracos/dd0668f281e685bad51479e5acaadb93.
+
+For the common words list, we used Github user shmookey's public repository. The link to this repository can be found here: https://gist.github.com/shmookey/b28e342e1b1756c4700f42f17102c2ff#file-words.

@@ -18,9 +18,14 @@ void Wordle::initWordsVec() {
     }
 
     textFile.close();
+    std::vector<std::string> commonWords;
+    textFile.open("assets/common-words.txt");
+    while (std::getline(textFile, word)) {
+        commonWords.emplace_back(word);
+    }
 
-    int index = rand() % 14855;
-    secretWord = validWords[index];
+    int index = rand() % commonWords.size();
+    secretWord = commonWords[index];
 }
 
 Wordle::Wordle()
