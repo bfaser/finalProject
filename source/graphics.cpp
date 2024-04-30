@@ -46,7 +46,7 @@ int showGraphics () {
   while (!window.isClosed()) {
     // Take in the user inputs -> poll events
     SDL_SetWindowTitle(window.windowObj(), "Main Menu");
-    pollEventMenu(window, &wordleButton);
+    pollEventMenu(window, buttonArray);
 
     // Present the renderer with whatever here
     rectangle.draw();
