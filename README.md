@@ -58,6 +58,10 @@ However, a user only gets to check and submit **4** incorrect guesses before los
 If the user submits 4 cells with common traits, those cells migrate to the 1st available row, merge together, and display the secret common trait.
 If the user is unable to find all the hidden traits within the alloted guesses, the traits are shown and the user loses the game.
 
+------ 25 Apr --------
+Small error with repeated letters persists 
+
+
 ### Hangman
 Hangman is one of the most popular and well-known word-guessing games.
 A simple explanation of how to play is to guess the hidden word letter-by-letter with less than **5** incorrect guesses.
