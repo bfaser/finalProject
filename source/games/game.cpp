@@ -3,6 +3,7 @@
 #include "../headers/games/game.hpp"
 
 Game::Game() {
+    running = false;
     highScore = 0;
     endState = "";
     maxAttempts = 5; // Generic Max Attempts

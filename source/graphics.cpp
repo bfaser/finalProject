@@ -5,6 +5,7 @@
 #include "..\headers\SDL2\rectangle.hpp"
 #include "..\headers\SDL2\text.hpp"
 #include "..\headers\games\wordle.hpp"
+#include "..\headers\games\hangman.hpp"
 
 
 // Convert this into the sign-in page ? 
@@ -77,12 +78,8 @@ void pollEventMenu (Window &window, Rectangle buttonArray[]) {
     }
     else if (buttonArray[1].isClicked(event)) {
       // Hangman Button Pressed
-      // Hangman hangmanInstance;
-      // showHangman(hangmanInstance, window);
-      std::cout << "Hangman button pressed!" << std::endl;
-    }
-    else {
-      
+      Hangman hangmanInstance;
+      hangmanInstance.play(window);
     }
   }
 }
@@ -90,8 +87,8 @@ void pollEventMenu (Window &window, Rectangle buttonArray[]) {
 // Main Menu Function for drawing all buttons to the screen
 void displayMenu (Rectangle buttonsArray[], Text buttonTexts[], int size) {
   for (int i = 0; i < size; i++) {
-    buttonsArray[i].draw();
-    buttonTexts[i].display();
+    if (buttonsArray != nullptr) {buttonsArray[i].draw();}
+    if (buttonTexts != nullptr) {buttonTexts[i].display();}
   }
 }
 

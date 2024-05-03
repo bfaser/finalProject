@@ -12,7 +12,6 @@ class Wordle : public Game  {
 private:
     std::string secretWord;
     int currentTry;
-    bool running;
     std::vector<std::string> validWords;
     std::vector<SDL_Color> color;
     std::vector<std::string> guessedWords;

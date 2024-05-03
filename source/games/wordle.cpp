@@ -86,7 +86,7 @@ void Wordle::play (Window &window) {
         window.clear(backgroundColor);
 
         if (endState != "") {
-            SDL_Delay(4000);
+            SDL_Delay(3000);
         }
 
         // This is used to destroy the objects, ensures no memory leak
