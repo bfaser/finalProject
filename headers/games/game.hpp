@@ -7,6 +7,7 @@
 
 class Game {
     protected:
+    SDL_Event *event;
     bool running;
     SDL_Color backgroundColor;
     int highScore;
@@ -18,6 +19,7 @@ class Game {
 
     public: 
     Game();
+    ~Game();
     virtual void play (Window &window) = 0;
 };
 

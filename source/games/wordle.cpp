@@ -30,9 +30,7 @@ void Wordle::initWordsVec() {
 
 Wordle::Wordle()
 {
-    maxAttempts = 5;
-    highScore = 0;
-    running = false;
+    event = new SDL_Event;
     currentTry = 0;
     if (validWords.size() == 0) {
         initWordsVec();
@@ -75,7 +73,7 @@ void Wordle::play (Window &window) {
         gridCreate(window, placement, color, wordleCells , true, wordleText);
 
         // Displaying the boxes for the wordle input fields
-        displayMenu (wordleCells,wordleText,(maxAttempts * (int)secretWord.length()));
+        displayMenu (wordleCells,wordleText,(maxAttempts * (int)secretWord.length()), *event);
         
         // Render the title of the game over the boxes (ensure that title doesn't get covered by the wordle boxes)
         wordleTitle.display(window.getWidth() / 2, 50, Window::renderer);
@@ -101,20 +99,19 @@ void Wordle::play (Window &window) {
 }
 
 bool Wordle::pollEvents() {
-    SDL_Event event;
-    if (SDL_PollEvent(&event)) {
+    if (SDL_PollEvent(event)) {
         // Text Input
-        switch (event.type) {
+        switch (event->type) {
             case SDL_QUIT:
             return false;
             break;
             case SDL_TEXTINPUT:
             // If its any character other than return or delete, add to the string (if less than 5 characters long)
-            if (guessedWords[currentTry].length() < secretWord.length() && isLetter(*event.text.text)) {
-                guessedWords[currentTry] += lower(*event.text.text);
+            if (guessedWords[currentTry].length() < secretWord.length() && isLetter(*event->text.text)) {
+                guessedWords[currentTry] += lower(*event->text.text);
             }
             case SDL_KEYDOWN:
-            switch (event.key.keysym.sym) {
+            switch (event->key.keysym.sym) {
             case  SDLK_BACKSPACE:
             //  If the key is backspace, delete last character
                 if (guessedWords[currentTry].length() > 0) {
@@ -192,6 +189,7 @@ void Wordle::endingState(Window &window) {
         return;
     }
     if (endState == "win") {
+        highScore = (maxAttempts - currentTry)*100;
         winScreen(window, "Score: " + std::to_string(highScore));
         return;
     }

@@ -12,6 +12,7 @@ Hangman::Hangman() {
 
 bool Hangman::initialize() {
     currentTry = 0;
+    event = new SDL_Event;
     std::vector<std::string> hangmanWords;
     std::string word;
     std::ifstream readFile("assets/hangmanWords.txt");
@@ -84,7 +85,7 @@ void Hangman::play (Window &window) {
 
         writeTexts(secretText, hiddenWord, dim, WHITE);
         gridCreate(window, dimensions, letterColors,cells, true, secretText);
-        displayMenu(cells, secretText, (int)secretWord.length());
+        displayMenu(cells, secretText, (int)secretWord.length(), *event);
 
         endingState(window);
 
@@ -99,17 +100,16 @@ void Hangman::play (Window &window) {
 }
 
 bool Hangman::pollEvents(std::vector<std::string> &hiddenWord) {
-    SDL_Event event;
-    if (SDL_PollEvent(&event)) {
-        switch (event.type) {
+    if (SDL_PollEvent(event)) {
+        switch (event->type) {
         case SDL_TEXTINPUT:
-            checkChar(*event.text.text, hiddenWord);
+            checkChar(*event->text.text, hiddenWord);
             break;
         case SDL_QUIT:
             return false;
             break;
         case SDL_KEYDOWN:
-            switch (event.key.keysym.sym) {
+            switch (event->key.keysym.sym) {
             case SDLK_ESCAPE:
                 return false;
                 break;      
@@ -121,7 +121,7 @@ bool Hangman::pollEvents(std::vector<std::string> &hiddenWord) {
         }
     }
     for (int i = 0; i < 26; i++) {
-        if (keys[i].isClicked(event)){
+        if (keys[i].isClicked(*event)){
             checkChar(characters[i], hiddenWord);
         }
     }
@@ -182,9 +182,9 @@ void Hangman::keyboard (Window &window, Rectangle keys[]) {
     gridCreate(window, dimensions, keyBoardColor, kbBottomRow, true, kbBottomChar);
 
 
-    displayMenu(kbTopRow, kbTopChar, topRow[0].size());
-    displayMenu(kbMiddleRow, kbMiddleChar, middleRow[0].size());
-    displayMenu(kbBottomRow, kbBottomChar, bottomRow[0].size());
+    displayMenu(kbTopRow, kbTopChar, topRow[0].size(), *event);
+    displayMenu(kbMiddleRow, kbMiddleChar, middleRow[0].size(), *event);
+    displayMenu(kbBottomRow, kbBottomChar, bottomRow[0].size(), *event);
 }
 
 void Hangman::checkChar(char chosenChar, std::vector<std::string> &hiddenWord) {
@@ -203,6 +203,7 @@ void Hangman::endingState(Window &window) {
         return;
     }
     if (endState == "win") {
+        highScore = (maxAttempts - currentTry)*100;
         winScreen(window, "Score: " + std::to_string(highScore));
         SDL_StopTextInput();
         return;

@@ -11,8 +11,10 @@ class Rectangle {
         int _x, _y; // Position[2] = {_x, _y}
         bool isButton;
         SDL_Color _color;
+        SDL_Color secondaryColor;
         SDL_Rect _rectangle;
         SDL_Texture *_texture = nullptr;
+        SDL_Event *event;
         
     public:
         bool mouseOver(SDL_Event &event);
@@ -21,14 +23,14 @@ class Rectangle {
         Rectangle(int w, int h, int position[], const std::string &image_path); // Image 
         ~Rectangle();
 
-        void draw(); // Add the rectangle to the renderer queue
+        void draw(SDL_Event &event); // Add the rectangle to the renderer queue
         void define(int w, int h, int positionX, int positionY, SDL_Color color); // define / redefine the Rectangle object
 
         // Setters
         void setColor (SDL_Color color);
         void setPosition (int position[]);
         void setDimensions (int w, int h);
-        void setButton (bool isButton);
+        void setButton (bool isButton, SDL_Event &event);
 
         // Getters
         SDL_Color getColor () const;

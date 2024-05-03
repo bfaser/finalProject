@@ -33,9 +33,9 @@ void gridCreate(Window &window, int placement[], std::vector<SDL_Color> &color, 
 void writeTexts (Text textArray[], std::vector<std::string> &stringArray, int dimensions[], SDL_Color color = {0,0,0,255}, int charLimit = 1);
 
 // Games and Windows
-int showGraphics (); // Possibly convert to the sign-in page
-void pollEventMenu (Window &window, Rectangle buttonArray[]);
-void displayMenu (Rectangle buttonsArray[], Text buttonTexts[], int size);
+int mainMenu (); // Possibly convert to the sign-in page
+void pollEventMenu (Window &window, Rectangle buttonArray[], SDL_Event &event);
+void displayMenu (Rectangle buttonsArray[], Text buttonTexts[], int size, SDL_Event &event);
 
 void cleanUp(Rectangle *rectangleArray, Text* rectangleText, int size);
 
@@ -45,6 +45,9 @@ void cleanUp(Rectangle *rectangleArray, Text* rectangleText, int size);
 
 bool isLetter(char &inputChar);
 
+
+int signIn ();
+bool signInPoll(std::string signInFields[], SDL_Event &event);
 
 // Must have this binary search function in the header file for some reasons (idk it didn't work otherwise :) )
 

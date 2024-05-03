@@ -8,6 +8,11 @@ Game::Game() {
     endState = "";
     maxAttempts = 5; // Generic Max Attempts
     backgroundColor = {100,100,100,255}; // Default Grey Background
+    event = nullptr;
+}
+
+Game::~Game() {
+    if (event != nullptr) {delete event;}
 }
 
 void Game::winScreen(Window &window, std::string supplementaryText) {
@@ -19,7 +24,7 @@ void Game::winScreen(Window &window, std::string supplementaryText) {
     Text supText(Window::renderer, 60, supplementaryText, {0,0,0,255});
 
     SDL_SetRenderDrawBlendMode(Window::renderer, SDL_BLENDMODE_BLEND);
-    winRect.draw();
+    winRect.draw(*event);
     winText.display(window.getWidth() / 2, (window.getHeight() / 2) - 40, Window::renderer);
     supText.display(window.getWidth() / 2, (window.getHeight() / 2) + 40, Window::renderer);
 
@@ -40,7 +45,7 @@ void Game::loseScreen(Window &window, std::string supplementaryText) {
 
     SDL_SetRenderDrawBlendMode(Window::renderer, SDL_BLENDMODE_BLEND);
 
-    loseRect.draw();
+    loseRect.draw(*event);
     loseText.display(window.getWidth() / 2, (window.getHeight() / 2) - 40, Window::renderer);
     supText.display(window.getWidth() / 2, (window.getHeight() / 2) + 40, Window::renderer);
 

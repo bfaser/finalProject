@@ -10,11 +10,12 @@
 
 // Convert this into the sign-in page ? 
 // It could look pretty cool to make the background of every page the Whitworth logo...watermark???
-int showGraphics () {
+int mainMenu () {
   // Create the window object and define the width / height of window
   int windowWidth = 640, windowHeight = 480;
   Window window("S\'GO BUCS", windowWidth, windowHeight);
   SDL_Color grey = {140,140,140,255};
+  SDL_Event event;
 
   // Create the Whitworth flag logo and center it
   int position[2] = {windowWidth / 2, windowHeight / 2 - 75};
@@ -25,14 +26,14 @@ int showGraphics () {
   Rectangle wordleButton (200, 50, buttonPosition, grey);
   Text wordleButtonText (Window::renderer, 60, "Wordle", {0, 0, 0, 255});
   wordleButtonText.linkRect(wordleButton);
-  wordleButton.setButton(true);
+  wordleButton.setButton(true, event);
 
   // Hangman Button
   buttonPosition[1] -= 75;
   Rectangle hangmanButton (200, 50, buttonPosition, grey);
   Text hangmanButtonText (Window::renderer, 60, "Hangman", {0, 0, 0, 255});
   hangmanButtonText.linkRect(hangmanButton);
-  hangmanButton.setButton(true);
+  hangmanButton.setButton(true, event);
 
   // Text "Whitworth Pirates" 
   Text text(Window::renderer, 30, "Whitworth Pirates", {0, 0, 0, 255});
@@ -47,14 +48,14 @@ int showGraphics () {
   while (!window.isClosed()) {
     // Take in the user inputs -> poll events
     SDL_SetWindowTitle(window.windowObj(), "Main Menu");
-    pollEventMenu(window, buttonArray);
+    pollEventMenu(window, buttonArray, event);
 
     // Present the renderer with whatever here
-    rectangle.draw();
+    rectangle.draw(event);
     text.display(windowWidth / 2 , windowHeight / 2 - 150, Window::renderer);
 
     // Draw Button and the text on button
-    displayMenu(buttonArray, buttonTexts, size);
+    displayMenu(buttonArray, buttonTexts, size, event);
 
     // Draw the presented items first, then add background behind them using widow.clear(SDL_Color background-color) function
     window.clear(backgroundColor);
@@ -62,9 +63,7 @@ int showGraphics () {
   return 0;
 }
 
-void pollEventMenu (Window &window, Rectangle buttonArray[]) {
-  // Set up a common event to be shared (i.e. no double polling)
-  SDL_Event event;
+void pollEventMenu (Window &window, Rectangle buttonArray[], SDL_Event &event) {
   // Conditionals to decode inputs (button presses, keystrokes, etc)
   if (SDL_PollEvent(&event)) {
     // Closing the window if escape or the window 'x' is pressed
@@ -85,9 +84,9 @@ void pollEventMenu (Window &window, Rectangle buttonArray[]) {
 }
 
 // Main Menu Function for drawing all buttons to the screen
-void displayMenu (Rectangle buttonsArray[], Text buttonTexts[], int size) {
+void displayMenu (Rectangle buttonsArray[], Text buttonTexts[], int size, SDL_Event &event) {
   for (int i = 0; i < size; i++) {
-    if (buttonsArray != nullptr) {buttonsArray[i].draw();}
+    if (buttonsArray != nullptr) {buttonsArray[i].draw(event);}
     if (buttonTexts != nullptr) {buttonTexts[i].display();}
   }
 }
@@ -204,4 +203,45 @@ bool isLetter(char &inputChar) {
         return true;
     }
     return false;
+}
+
+int signIn () {
+  int WINDOW_WIDTH = 640, WINDOW_HEIGHT = 480;
+  Window window ("Sign-In Page", WINDOW_WIDTH,WINDOW_HEIGHT);
+  SDL_Event event;
+  std::string textInputs[2] = {""};
+  // textInputs[0] -> User name field
+  // textInputs[1] -> Password field
+
+  bool running = true;
+  SDL_Color backgroundColor = {255,255,255,255};
+  SDL_StartTextInput();
+  while (running) {
+    running  = signInPoll(textInputs, event);
+    window.clear(backgroundColor);
+  }
+  SDL_StopTextInput();
+  return 0;
+}
+
+bool signInPoll(std::string signInFields[], SDL_Event &event) {
+  if (SDL_PollEvent(&event)) {
+      switch (event.type)
+      {
+      case SDL_TEXTINPUT:
+
+      case SDL_QUIT:
+        return false;
+        break;
+      case SDL_KEYDOWN:
+        if (event.key.keysym.sym == SDLK_ESCAPE) {
+          return false;
+        }
+        break;
+      default:
+        return true;
+        break;
+      }
+    }
+    return true;
 }
