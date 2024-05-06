@@ -48,7 +48,7 @@ For every correct letter in the correct place, the cell containing that letter w
 Once all the cells are $\textcolor{green}{green}$, the game is over and won. 
 If the user goes through **5** iterations of this process without guessing the target word, the user loses the game.
 
-### Connections
+<!-- ### Connections
 Connections is another New York Times mini-game, similar to Wordle.
 Connections has a 4x4 grid of cells that each have a word in them.
 The Goal of Connections is to find 4 cells that have a something in common, determined behind the scenes at the beginning of the game. 
@@ -56,7 +56,7 @@ When the user selects four cells they believe to have a commonality, they are ab
 However, a user only gets to check and submit **4** incorrect guesses before losing the game
 (A submission of 4 cells with a common trait does *not* count towards this).
 If the user submits 4 cells with common traits, those cells migrate to the 1st available row, merge together, and display the secret common trait.
-If the user is unable to find all the hidden traits within the alloted guesses, the traits are shown and the user loses the game.
+If the user is unable to find all the hidden traits within the alloted guesses, the traits are shown and the user loses the game. -->
 
 ### Hangman
 Hangman is one of the most popular and well-known word-guessing games.

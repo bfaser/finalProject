@@ -90,10 +90,11 @@ void Hangman::play (Window &window) {
         endingState(window);
 
         window.clear(backgroundColor);
-
+        
         if (endState != "") {
             SDL_Delay(3000);
         }
+        cleanUp(cells, secretText, (int)secretWord.length());
     }
     SDL_StopTextInput();
     return;
