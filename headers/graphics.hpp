@@ -7,7 +7,6 @@
 #include "..\headers\SDL2\text.hpp"
 #include "..\headers\games\wordle.hpp"
 
-
 // Rendering Functions (reusable)
 
 std::string checkStringLength (std::string inputString, int charLength);
@@ -29,25 +28,58 @@ char lower (char input);
     Since an array of rectangle objects is passed in, the objects themselves are modified, hence the void return of the function
 */  
 
-void gridCreate(Window &window, int placement[], SDL_Color color[], Rectangle rectangleArray[], bool multiBuffer = false, Text rectangleText[] = nullptr);
+void gridCreate(Window &window, int placement[], std::vector<SDL_Color> &color, Rectangle rectangleArray[], bool multiBuffer = false, Text rectangleText[] = nullptr);
 
-void writeTexts (Text textArray[], std::string stringArray[], int dimensions[], SDL_Color color = {0,0,0,255}, int charLimit = 1);
+void writeTexts (Text textArray[], std::vector<std::string> &stringArray, int dimensions[], SDL_Color color = {0,0,0,255}, int charLimit = 1);
 
 // Games and Windows
-int showGraphics (); // Possibly convert to the sign-in page
-void pollEventMenu (Window &window, Rectangle buttonArray[]);
-int showWordle (Wordle &wordleInstance, Window &wordleWindow);
-void pollWordleEvents (Window &window, int& trial, Wordle &wordleInstance);
-bool wordleSubmit (Wordle &wordleInstance, std::string &enteredWord, int &trial);
-void cleanUpWordle(Rectangle *rectangleArray, Text* rectangleText, int size);
+int mainMenu (); // Possibly convert to the sign-in page
+void pollEventMenu (Window &window, Rectangle buttonArray[], SDL_Event &event);
+void displayMenu (Rectangle buttonsArray[], Text buttonTexts[], int size, SDL_Event &event);
+
+void cleanUp(Rectangle *rectangleArray, Text* rectangleText, int size);
 
 // Sign-in window function
 // Connections window function
 // Hangman window function
 
-template <typename Type> 
-int binarySearch (Type &key, std::vector<Type> &array);
+bool isLetter(char &inputChar);
+
+
+int signIn ();
+bool signInPoll(std::string signInFields[], SDL_Event &event);
+
+// Must have this binary search function in the header file for some reasons (idk it didn't work otherwise :) )
+
+
 template <typename Type>
-int binarySearch (std::vector<Type> &array, Type &key, int low, int high);
+int binarySearch (std::vector<Type> &array, Type &key, int low, int high) 
+{
+    int middle = (low + high) / 2;
+    // Case where key is NOT in data set
+    /* There will be no difference in middle if low and high are separated by one
+    This happens when the whole array has been searched through for the key value */
+    if (low > high) {
+        return -(middle + 1);
+    }
+    // Binary Search where key is in data set
+    // Lower Half
+    else if (key < array[middle]) {
+        // Look at the lower half
+        // High changes, low does not
+        return binarySearch(array, key, low, middle - 1);
+    }
+    // Upper Half
+    else if (key > array[middle]) {
+        // Look at the upper half
+        // Low changes, high does not
+        return binarySearch(array, key, middle + 1, high);
+    }
+    // Is Half
+    else /*(key == array[middle])*/ {
+        // The middle number IS the key
+        return middle;
+    }
+}
 
 #endif

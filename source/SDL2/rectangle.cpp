@@ -10,7 +10,12 @@ Rectangle::Rectangle(int w, int h, int position[], SDL_Color color):
     _y = position[1];
 
     _color = color;
+    secondaryColor.r = color.r / 2;
+    secondaryColor.g = color.g / 2;
+    secondaryColor.b = color.b / 2;
+    secondaryColor.a = color.a;
     isButton = false;
+    event = nullptr;
 
     _rectangle.w = _w;
     _rectangle.h = _h;
@@ -62,7 +67,7 @@ Rectangle::~Rectangle() {
     SDL_DestroyTexture(_texture);
 }
 
-void Rectangle::draw() {
+void Rectangle::draw(SDL_Event &event) {
     if (_texture) {
         SDL_RenderCopy(Window::renderer, _texture, nullptr, &_rectangle);
     }
@@ -109,8 +114,9 @@ void Rectangle::setDimensions (int w, int h) {
     _h = h;
 }
 
-void Rectangle::setButton(bool isButton) {
+void Rectangle::setButton(bool isButton, SDL_Event &event) {
     this->isButton = isButton;
+    this->event  = &event;
 }
 
 bool Rectangle::getButtonState () const {
@@ -132,6 +138,7 @@ bool Rectangle::mouseOver(SDL_Event &event) {
     bottomSide = _y + (_h / 2);
 
     int mX, mY;
+
     mX = event.motion.x;
     mY = event.motion.y;
 

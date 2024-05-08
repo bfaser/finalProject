@@ -4,23 +4,27 @@
 #include <string>
 #include <vector>
 
+#include "../headers/games/game.hpp"
+#include "../headers/SDL2/window.hpp"
 #include "../SDL2/include/SDL2/SDL.h"
 
-class Wordle {
+class Wordle : public Game  {
 private:
-    int highscore;
     std::string secretWord;
-    int tries;
+    int currentTry;
     std::vector<std::string> validWords;
+    std::vector<SDL_Color> color;
+    std::vector<std::string> guessedWords;
     
+    bool submit (std::string &enteredWord);
+    bool pollEvents ();
     void initWordsVec ();
+    void endingState (Window &window);
 public:
     Wordle();
 
-    std::vector<std::string> getWordsVec() const;
-    std::string getSecretWord() const;
-    SDL_Color color[25];
-    std::string guessedWords[5];
+
+    void play (Window &window);
 };
 
 #endif
