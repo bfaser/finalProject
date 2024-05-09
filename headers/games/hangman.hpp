@@ -11,7 +11,8 @@ private:
     std::vector<SDL_Color> letterColors;
     std::string secretWord;
     Rectangle keys[26];
-    std::string characters;
+    static std::string characters;
+    Rectangle* livesGraphic;
     int currentTry;
 
     bool initialize ();
@@ -21,6 +22,7 @@ private:
     void endingState(Window &window);
 public:
     Hangman();
+    ~Hangman();
 
     void play(Window &window);
 };
