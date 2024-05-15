@@ -12,10 +12,16 @@ Hangman::Hangman() {
 //  Defining Static members
 std::string Hangman::characters = "qwertyuiopasdfghjklzxcvbnm";
 
+// Initialize the Hangman class
 bool Hangman::initialize() {
+    // Set graphic to nothing (default)
     livesGraphic = nullptr;
+    // Reset tries
     currentTry = 0;
+    // New SDL_event
     event = new SDL_Event;
+
+    // Populate the possible hangman hidden words vector and chose one
     std::vector<std::string> hangmanWords;
     std::string word;
     std::ifstream readFile("assets/hangmanWords.txt");
@@ -26,11 +32,14 @@ bool Hangman::initialize() {
     secretWord = hangmanWords[rand() % hangmanWords.size()];
     readFile.close();
 
+
+    // Check that the secret word is set to something
     if (secretWord.length() == 0) {
         std::cerr << "Error choosing secret word\n";
         return false;
     }
 
+    // Prepare the colors for the secret word blanks
     SDL_Color SILVER = {192,192,192,255};
     for (int i = 0; i < (int)secretWord.length(); i++) {
         letterColors.emplace_back(SILVER);
@@ -40,7 +49,7 @@ bool Hangman::initialize() {
         return false;
     }
 
-
+    // Check the static variable to make sure all characters are accounted for
     if (characters.length() != 26) {
         std::cerr << "Failed to create characters array\n";
         return false;
@@ -49,6 +58,8 @@ bool Hangman::initialize() {
     return true;
 }
 
+
+// Main Hangman Window and game implementation
 void Hangman::play (Window &window) {
     running = true;
     SDL_Color TextColor = {20,20,20,255};
@@ -77,11 +88,13 @@ void Hangman::play (Window &window) {
     int dim[2] = {1, (int)secretWord.length()};
     
 
-    // Event Handling
+    // Main Game loop
     SDL_StartTextInput();
     while (running) {
+        // Handle all inputs 
         running = pollEvents(hiddenWord);
 
+        // Draw the keyboard
         keyboard(window, keys);
 
         // Begin Drawing
@@ -90,17 +103,21 @@ void Hangman::play (Window &window) {
         gridCreate(window, dimensions, letterColors, cells, true, secretText);
         displayMenu(cells, secretText, (int)secretWord.length(), *event);
 
+        // If there has been an error, display the correct graphic according to the "health" left
         if (currentTry > 0) {
             delete livesGraphic;
             int pos[2] = {320, 105};
             livesGraphic = new Rectangle(200,200, pos, (std::string)("assets/hangmanGraphics/ichigo_"+ std::to_string(currentTry) + ".png"));
             livesGraphic->draw(*event);
         }
+        // Check for end state and draw it to window
         endingState(window);
 
+        // Present to rendering and clear to background color
         window.clear(backgroundColor);
 
         // End Drawing
+
         // Check Win State
         
         if (endState != "") {
@@ -115,6 +132,7 @@ void Hangman::play (Window &window) {
     return;
 }
 
+// Poll Events for the hangman main game loop
 bool Hangman::pollEvents(std::vector<std::string> &hiddenWord) {
     if (SDL_PollEvent(event)) {
         switch (event->type) {
@@ -152,6 +170,7 @@ bool Hangman::pollEvents(std::vector<std::string> &hiddenWord) {
     return true;
 }
 
+// Create the keyboard of interactable buttons
 void Hangman::keyboard (Window &window, Rectangle keys[]) {
     SDL_Color TC = {20,20,20,255};
 
@@ -202,6 +221,9 @@ void Hangman::keyboard (Window &window, Rectangle keys[]) {
     displayMenu(kbBottomRow, kbBottomChar, bottomRow[0].size(), *event);
 }
 
+
+// Called after the submission of every character
+// Checks to see if the letter is in the displaying if it is and incrementing current try if not
 void Hangman::checkChar(char chosenChar, std::vector<std::string> &hiddenWord) {
     std::string preChange = hiddenWord[0];
     for (int i = 0; i < (int)secretWord.length(); i++) {
@@ -211,6 +233,7 @@ void Hangman::checkChar(char chosenChar, std::vector<std::string> &hiddenWord) {
     else if (hiddenWord[0] == preChange) {currentTry++;}
 }
 
+// Check for end state, overlaying state on top of game
 void Hangman::endingState(Window &window) {
     if (running) {
         return;

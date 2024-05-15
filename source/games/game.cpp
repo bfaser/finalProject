@@ -15,6 +15,8 @@ Game::~Game() {
     if (event != nullptr) {delete event;}
 }
 
+// Win screen presented at the win condition
+// Overlayed on the game window
 void Game::winScreen(Window &window, std::string supplementaryText) {
     int position[2] = {window.getWidth() / 2, window.getHeight() /2};
     SDL_Color winBackground = {255, 255, 255, 190};
@@ -35,6 +37,8 @@ void Game::winScreen(Window &window, std::string supplementaryText) {
     return;
 }
 
+// Lose screen presented at the lose condition
+// Overlayed on the game window
 void Game::loseScreen(Window &window, std::string supplementaryText) {
     int position[2] = {window.getWidth() / 2, window.getHeight() /2};
     SDL_Color loseBackground = {0, 0, 0, 190};

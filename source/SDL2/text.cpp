@@ -1,3 +1,7 @@
+/***************************************
+*   This File has been adapted from the YouTube tutorial series on SDL2
+*
+****************************************/
 #include <iostream>
 #include <string>
 #include "../headers/SDL2/text.hpp"

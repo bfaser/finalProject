@@ -63,6 +63,8 @@ int mainMenu () {
   return 0;
 }
 
+
+// Polls the events of the Main Menu
 void pollEventMenu (Window &window, Rectangle buttonArray[], SDL_Event &event) {
   // Conditionals to decode inputs (button presses, keystrokes, etc)
   if (SDL_PollEvent(&event)) {
@@ -94,7 +96,7 @@ void displayMenu (Rectangle buttonsArray[], Text buttonTexts[], int size, SDL_Ev
 
 /*
 Window:: window
-  Window to render grid onto, also provides the window width & height
+Window to render grid onto, also provides the window width & height
 
 int placement[3-6] = {rows, columns, buffer(s)}
 
@@ -175,6 +177,7 @@ void writeTexts (Text textArray[], std::vector<std::string> &stringArray, int di
   }
 }
 
+// Converts an input character to its lower case equivalent if it is uppercase
 char lower (char input) {
   if (input < 'a'){
       input += 'a' - 'A';
@@ -182,6 +185,8 @@ char lower (char input) {
   return input;
 }
 
+// Checks the length of the input string
+// If the string is shorter than the desired length, charLength, a whitespace character is appended
 std::string checkStringLength (std::string inputString, int charLength) {
   while ((int)inputString.length() <= charLength) {
     inputString.append(" ");
@@ -189,6 +194,8 @@ std::string checkStringLength (std::string inputString, int charLength) {
   return inputString;
 }
 
+// Calls the destructor of the given rectangleArray and rectangleText objects
+// This was in response to a memory leak that happens while games are being played
 void cleanUp(Rectangle* rectangleArray, Text* rectangleText, int size) {
   for (int i = 0; i < size; i++) {
     rectangleArray[i].~Rectangle();
@@ -196,6 +203,8 @@ void cleanUp(Rectangle* rectangleArray, Text* rectangleText, int size) {
   } 
 }
 
+// Checks if an input character is a letter
+// Simultaneously converts any input character to its lowercase equivalent if appropriate
 bool isLetter(char &inputChar) {
     inputChar = lower(inputChar);
 
@@ -205,6 +214,11 @@ bool isLetter(char &inputChar) {
     return false;
 }
 
+// UNFINISHED AND UNIMPLEMENTED
+
+
+
+// Sign in window
 int signIn () {
   int WINDOW_WIDTH = 640, WINDOW_HEIGHT = 480;
   Window window ("Sign-In Page", WINDOW_WIDTH,WINDOW_HEIGHT);
@@ -224,6 +238,8 @@ int signIn () {
   return 0;
 }
 
+
+// Events polling (any input to the keyboard or mouse) for the sign in page
 bool signInPoll(std::string signInFields[], SDL_Event &event) {
   if (SDL_PollEvent(&event)) {
       switch (event.type)

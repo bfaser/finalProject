@@ -22,11 +22,10 @@ Date: Spring, 2024
 
 ## Structure and Overview
 
-<!-- 
-C++ project with underlying SDL2 Framework. 
-Emphasis on object oriented programming and code readability. 
-
--->
+This project is a C++ project with an underlying graphical framework of SDL2, an external library. 
+It employs CS-172 topics such as dynamic memory management and vectors, inheritance, and file manipulation. 
+Implementing dynamic memory allocation and vectors, we used vectors to store a list of valid words for wordle. 
+We also used vectors to hold the valid words for both hangman and wordle, selecting a random index to serve as the "secret word." 
 
 ## Main Menu
 

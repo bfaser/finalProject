@@ -8,7 +8,10 @@
 #include "../headers/games/wordle.hpp"
 #include "../headers/graphics.hpp"
 
+
+// Initializes the words vectors inside the wordle class
 void Wordle::initWordsVec() {
+    // Loads the valid words text file into a vector
     std::ifstream textFile;
     textFile.open("assets/valid-wordle-words.txt");
     
@@ -18,6 +21,7 @@ void Wordle::initWordsVec() {
     }
 
     textFile.close();
+    // Loads the possible secret words into a vector and selects one
     std::vector<std::string> commonWords;
     textFile.open("assets/common-words.txt");
     while (std::getline(textFile, word)) {
@@ -28,6 +32,8 @@ void Wordle::initWordsVec() {
     secretWord = commonWords[index];
 }
 
+
+// Initializes the wordle class with a new SDL event, new tries and sets up the rectangle colors
 Wordle::Wordle()
 {
     event = new SDL_Event;
@@ -44,6 +50,7 @@ Wordle::Wordle()
     std::cout << secretWord << std::endl;
 }
 
+// Window for Wordle game
 void Wordle::play (Window &window) {
     // Set up the window, wordle grid and text objects (preprocessing)
     running = true;
@@ -83,6 +90,7 @@ void Wordle::play (Window &window) {
         // Draw everything in the render buffer and clear the background with generic color
         window.clear(backgroundColor);
 
+        // Check if either the win or lose conditions are true
         if (endState != "") {
             SDL_Delay(3000);
         }
@@ -93,11 +101,12 @@ void Wordle::play (Window &window) {
 
     // Clean-up after
     SDL_StopTextInput();
-
-    cleanUp(wordleCells, wordleText, (maxAttempts * (int)secretWord.length()));
     return;
 }
 
+
+// Poll Events for the Wordle Game loop
+// Any input to the keyboard or mouse is considered an event
 bool Wordle::pollEvents() {
     if (SDL_PollEvent(event)) {
         // Text Input
@@ -132,7 +141,7 @@ bool Wordle::pollEvents() {
                     return false;
                 }
                 else if (valid) {
-                    // Increment the 
+                    // Increment the current try
                     currentTry++;
                     if (currentTry >= maxAttempts) {
                     endState = "lose";
@@ -154,26 +163,35 @@ bool Wordle::pollEvents() {
         return true;
 }
 
+
+// Submission check function for the wordle game
+// Called when enter key is hit and the row contains 5 characters
 bool Wordle::submit(std::string &enteredWord) {
+    // Check if word is valid
     int isValid = binarySearch(validWords, enteredWord, 0, validWords.size() - 1);
-    SDL_Color red = {202, 52, 51, 255};
-    SDL_Color orange = {245, 224, 80,255};
-    SDL_Color green = {123, 182, 97,255}; 
     if (isValid < 0) {
         std::cout << "Invalid Word" << std::endl;
         return false;
     }
+
+    // Set up the colors for the different scenarios 
+    SDL_Color red = {202, 52, 51, 255};
+    SDL_Color orange = {245, 224, 80,255};
+    SDL_Color green = {123, 182, 97,255}; 
     std::string word  = secretWord;
     for (int i = 0; i < (int)secretWord.length(); i++) {
         int index = (int)secretWord.find(enteredWord[i]);
+        // Correct Letter with Correct Placement
         if (secretWord[i] == enteredWord[i]) {
         color[currentTry*(int)secretWord.length() + i] = green;
         word.erase(index,0);
         }
+        // Correct Letter with Incorrect Placement
         else if (index >= 0) {
         color[currentTry*(int)secretWord.length() + i] = orange;
         word.erase(index,0);
         }
+        // Incorrect Letter entirely
         else {
         color[currentTry*(int)secretWord.length() + i] = red;
         }
@@ -181,6 +199,7 @@ bool Wordle::submit(std::string &enteredWord) {
     return true;
 }
 
+// Displays the win or lose screen overlayed on the game
 void Wordle::endingState(Window &window) {
     if (running) {
         return;

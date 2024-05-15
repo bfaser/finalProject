@@ -1,3 +1,7 @@
+/***************************************
+*   This File has been adapted from the YouTube tutorial series on SDL2
+*
+****************************************/
 #include <iostream>
 #include "../SDL2/include/SDL2/SDL_image.h"
 #include "../SDL2/include/SDL2/SDL_ttf.h"
